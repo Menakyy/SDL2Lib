@@ -18,7 +18,8 @@ add_executable(${PROJECT_NAME}
     "Window.cpp"
     "Renderer.cpp"
     "TextField.cpp"
-    "FontManager.cpp")
+    "FontManager.cpp"
+    "Image.cpp")
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_ttf SDL2_image)
 

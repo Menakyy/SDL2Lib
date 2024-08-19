@@ -3,8 +3,10 @@
 #include "TextField.h"
 #include "Window.h"
 #include "FontManager.h"
+#include "Image.h"
 #include <iostream>
 
+int pauseTime = 300;
 
 std::string text1 = "Hello, World!";
 std::string text2 = "Hello, Planet!";
@@ -27,6 +29,9 @@ int main()
                         { 0, 0, 0, 255 },
                         font.get());
 
+    Image image(renderer.getRenderer(), "pngs/Person.png");
+    image.setDestRect({ 220, 205, 70, 200 });
+
     SDL_Event event;
     bool      running = true;
     while (running)
@@ -39,22 +44,22 @@ int main()
             }
         }
 
+        renderer.clear();
+
         textField.setText(text1);
         textField.setRect({ 0, 0, 200, 50 });
         textField.setColor({ 0, 0, 0, 255 });
-        renderer.clear();
         textField.render();
-        renderer.present();
-        SDL_Delay(200);
-
 
         textField.setText(text2);
         textField.setRect({ 340, 380, 300, 100 });
         textField.setColor({ 100, 100, 100, 255 });
-        renderer.clear();
         textField.render();
+
+        image.render();
+
         renderer.present();
-        SDL_Delay(200);
+        SDL_Delay(pauseTime);
     }
 
     return 0;
