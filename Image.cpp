@@ -25,7 +25,6 @@ void Image::loadImage(const std::string& filePath)
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
         return;
     }
-
     texture = SDL_CreateTextureFromSurface(renderer, surfacetmp);
     SDL_FreeSurface(surfacetmp);
 
@@ -43,7 +42,7 @@ void Image::render(const SDL_Rect* srcRect, const SDL_Rect* destRect) const
 {
     if (texture != nullptr)
     {
-        if(srcRect == nullptr || (srcRect->w == 0 && srcRect->h == 0))
+        if (srcRect == nullptr || (srcRect->w == 0 && srcRect->h == 0))
         {
             SDL_RenderCopy(renderer, texture, nullptr, destRect);
         }
@@ -62,9 +61,6 @@ void Image::render() const
 void Image::setDestRect(const SDL_Rect& rect)
 {
     ImageDestRect = rect;
-
-    std::cout << "Image Dest Rect: x=" << ImageDestRect.x << ", y=" << ImageDestRect.y << ", w=" << ImageDestRect.w
-              << ", h=" << ImageDestRect.h << std::endl;
 }
 
 void Image::setSrcRect(const SDL_Rect& rect)
