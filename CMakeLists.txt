@@ -19,7 +19,11 @@ add_executable(${PROJECT_NAME}
     "Renderer.cpp"
     "TextField.cpp"
     "FontManager.cpp"
-    "Image.cpp")
+    "Image.cpp"
+    "Point.cpp"
+    "Line.cpp"
+    "Rectangle.cpp"
+    "EventHandler.cpp")
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_ttf SDL2_image)
 
