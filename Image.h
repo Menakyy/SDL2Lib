@@ -23,6 +23,8 @@ private:
     SDL_Rect ImageDestRect = { 0, 0, 0, 0 };
     SDL_Rect ImageSrcRect  = { 0, 0, 0, 0 };
 
+    std::string imageFilePath = "";
+
     void loadImage(const std::string& filePath);
 };
 

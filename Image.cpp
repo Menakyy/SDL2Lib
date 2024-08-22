@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "Logger.h"
 
 #include <SDL2/SDL_image.h>
 #include <iostream>
@@ -36,6 +37,8 @@ void Image::loadImage(const std::string& filePath)
     {
         std::cout << "Image loaded successfully: " << filePath << std::endl;
     }
+
+    imageFilePath = filePath;
 }
 
 void Image::render(const SDL_Rect* srcRect, const SDL_Rect* destRect) const
@@ -60,6 +63,10 @@ void Image::render() const
 
 void Image::setDestRect(const SDL_Rect& rect)
 {
+     std::string message = "Setting dest rect for image: " + imageFilePath + ", " + std::to_string(rect.x) + ", " + std::to_string(rect.y) + 
+                          ", " + std::to_string(rect.w) + ", " + std::to_string(rect.h);
+    Logger::getInstance().log(message);
+
     ImageDestRect = rect;
 }
 
