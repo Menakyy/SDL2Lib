@@ -13,24 +13,20 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
-#include <string>
 
-const int SCREEN_WIDTH  = 640;
-const int SCREEN_HEIGHT = 480;
-const int ROCK_SPEED    = 3;
-int punkty = 0;
+int pauseTime = 300;
 
-void moveRock(Image& rock, SDL_Rect& rockSrcRect, int windowWidth, int windowHeight, int rockSpeed, int& punkty)
+std::string text1 = "Hello, World!";
+std::string text2 = "Hello, Planet!";
+
+void moveRock(SDL_Rect& rockSrcRect, int windowWidth, int windowHeight, int rockSpeed)
 {
     if (rockSrcRect.y > windowHeight)
     {
         rockSrcRect.y = -10;
         rockSrcRect.x = rand() % (windowWidth - rockSrcRect.w);
-        punkty++;
     }
     rockSrcRect.y += rockSpeed;
-
-    rock.setDestRect(rockSrcRect);
 }
 
 bool checkCollision(const SDL_Rect& object1, const SDL_Rect& object2)
@@ -38,19 +34,15 @@ bool checkCollision(const SDL_Rect& object1, const SDL_Rect& object2)
     return SDL_HasIntersection(&object1, &object2);
 }
 
-void presentTextField(Renderer& renderer, TextField& text, int delay)
-{
-    renderer.clear();
-    text.render();
-    renderer.present();
-    SDL_Delay(delay);
-}
 int main()
 {
     SDLSystem sdl(SDL_INIT_VIDEO);
-    Window    window("SDL2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    Window    window("SDL2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
     Renderer  renderer(window.getWindow(), -1, SDL_RENDERER_ACCELERATED);
     renderer.setRenderDrawColor(255, 255, 255, 255);
+
+    auto      font = FontManager::loadFont("fonts/LiberationSans-Bold.ttf", 24);
+    TextField textField(renderer.getRenderer(), text1, { 0, 0, 200, 50 }, { 0, 0, 0, 255 }, font.get());
 
     Image    person(renderer.getRenderer(), "pngs/Person_3.png");
     SDL_Rect personSrcRect = { 220, 205, 70, 200 };
@@ -64,20 +56,28 @@ int main()
     SDL_Rect rock2SrcRect = { 300, -50, 50, 50 };
     rock2.setDestRect(rock2SrcRect);
 
-    auto font = FontManager::loadFont("fonts/LiberationSans-Bold.ttf", 24);
-    std::string pointsText = "Punkty: 0";
-    TextField textField(renderer.getRenderer(), pointsText, { SCREEN_WIDTH - 150, 0, 150, 50 }, { 0, 0, 0, 255 }, font.get());
+    std::vector<SDL_Point> points = { { 50, 100 }, { 100, 150 }, { 150, 200 }, { 200, 250 } };
+    Point                  point(renderer.getRenderer(), points);
+    point.addPoint({ 250, 300 });
 
-    std::string gameOver = "Game Over!";
-    TextField gameOverText(renderer.getRenderer(), gameOver, { SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 50, 200, 100 }, { 255, 0, 0, 255 }, font.get());
+    Line line(renderer.getRenderer(), { 0, 0 }, { 640, 480 });
+    line.addLine({ 640, 0 }, { 0, 480 });
 
-    std::string startGame = "Rock Game";
-    TextField startGameText(renderer.getRenderer(), startGame, { SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 50, 200, 100 }, { 255, 0, 0, 255 }, font.get());
+    std::vector<std::pair<SDL_Point, SDL_Point>> lines = { { { 50, 0 }, { 50, 480 } }, { { 100, 0 }, { 100, 480 } } };
+    Line                                         line2(renderer.getRenderer(), lines);
+
+    SDL_Rect  rect1 = { 50, 50, 100, 100 };
+    SDL_Rect  rect2 = { 200, 50, 100, 100 };
+    Rectangle filledRect(renderer.getRenderer(), rect1);
+    filledRect.addRect(rect2);
+    Rectangle outlinedRect(renderer.getRenderer(), { 350, 50, 100, 100 });
+
+    SDL_Rect rect = { 270, 190, 100, 100 };
 
     EventHandler eventHandler;
-    bool         running = true;
-    
-    presentTextField(renderer, startGameText, 1000);
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    bool running = true;
     while (running)
     {
         while (eventHandler.pollEvent())
@@ -106,9 +106,8 @@ int main()
                 person.setDestRect(personSrcRect);
             }
         }
-
-        moveRock(rock, rockSrcRect, SCREEN_WIDTH, SCREEN_HEIGHT, ROCK_SPEED, punkty);
-        moveRock(rock2, rock2SrcRect, SCREEN_WIDTH, SCREEN_HEIGHT, ROCK_SPEED, punkty);
+        moveRock(rockSrcRect, 640, 480, 3);
+        moveRock(rock2SrcRect, 640, 480, 3);
 
         if (checkCollision(personSrcRect, rockSrcRect) || checkCollision(personSrcRect, rock2SrcRect))
         {
@@ -116,19 +115,13 @@ int main()
             running = false;
         }
 
-        pointsText = "Points: " + std::to_string(punkty);
-        textField.setText(pointsText);
-
         renderer.clear();
         person.render();
         rock.render();
         rock2.render();
-        textField.render();
         renderer.present();
         SDL_Delay(16);
     }
-    
-    presentTextField(renderer, gameOverText, 1000);
 
     return 0;
 }
