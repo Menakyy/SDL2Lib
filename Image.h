@@ -16,6 +16,10 @@ public:
     void setDestRect(const SDL_Rect& rect);
     void setSrcRect(const SDL_Rect& rect);
 
+    SDL_Rect& getDestRect() { return ImageDestRect; }
+
+    SDL_Rect& getSrcRect() { return ImageSrcRect; }
+
 private:
     SDL_Renderer* renderer = nullptr;
     SDL_Texture*  texture  = nullptr;
