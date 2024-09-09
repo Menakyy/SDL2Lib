@@ -21,3 +21,8 @@ SDL_Window* Window::getWindow() const
 {
     return window;
 }
+
+void Window::setSize(size_t width, size_t height)
+{
+    SDL_SetWindowSize(window, width, height);
+}

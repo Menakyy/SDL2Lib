@@ -18,6 +18,11 @@ SDL_Event EventHandler::getEvent() const
     return event;
 }
 
+bool EventHandler::isTextInput() const
+{
+    return event.type == SDL_TEXTINPUT;
+}
+
 bool EventHandler::isQuit() const
 {
     return event.type == SDL_QUIT;

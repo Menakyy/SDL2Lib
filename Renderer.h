@@ -13,6 +13,8 @@ public:
 
     void setRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
+    void setRenderTarget(SDL_Texture* texture);
+
     void clear() const;
     void present() const;
     void copy(SDL_Texture* texture, const SDL_Rect* srcrect, const SDL_Rect* dstrect) const;

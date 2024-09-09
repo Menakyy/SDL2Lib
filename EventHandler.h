@@ -12,6 +12,7 @@ public:
     bool      pollEvent();
     SDL_Event getEvent() const;
 
+    bool        isTextInput() const;
     bool        isQuit() const;
     bool        isKeyDown() const;
     bool        isKeyUp() const;
