@@ -65,7 +65,7 @@ void Image::setDestRect(const SDL_Rect& rect)
 {
      std::string message = "Setting dest rect for image: " + imageFilePath + ", " + std::to_string(rect.x) + ", " + std::to_string(rect.y) + 
                           ", " + std::to_string(rect.w) + ", " + std::to_string(rect.h);
-    Logger::getInstance().log(message);
+    // Logger::getInstance().log(message);
 
     ImageDestRect = rect;
 }

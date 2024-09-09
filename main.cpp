@@ -97,7 +97,7 @@ int main()
                             { 255, 0, 0, 255 },
                             font.get());
 
-    std::string resolutionPrompt = "Wpisz predkosc kamieni:";
+    std::string resolutionPrompt = "Rock speed [1:10 | Def. 3]:";
     TextField   resolutionPromptText(renderer.getRenderer(),
                                    resolutionPrompt,
                                    { 50, 50, 400, 50 },
@@ -138,12 +138,15 @@ int main()
     std::vector<Image*> images = { rock, rock2 };
 
     EventHandler eventHandler;
-
+    
+    // Start the game
+    // Starting text fields
     presentTextField(renderer, startGameText, 1000);
 
     bool running         = true;
     bool waitingForInput = true;
 
+    // Set rock speed
     resolutionPromptText.render();
     renderer.present();
     while (waitingForInput)
@@ -174,6 +177,7 @@ int main()
     
     setRockSpeed(textInput.getText());
 
+    // Game loop
     while (running)
     {
         while (eventHandler.pollEvent())
@@ -264,6 +268,7 @@ int main()
         SDL_Delay(16);
     }
 
+    // Game over
     presentTextField(renderer, gameOverText, 1000);
 
     for (auto* image : images)
