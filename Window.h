@@ -13,6 +13,7 @@ public:
 
     SDL_Window* getWindow() const;
     void setSize(size_t width, size_t height);
+    void getSize(size_t& width, size_t& height) const;
 
 private:
     SDL_Window*   window   = nullptr;

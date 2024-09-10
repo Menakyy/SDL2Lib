@@ -9,6 +9,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+include_directories("lib/" "./")
+
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
@@ -28,6 +30,9 @@ add_executable(${PROJECT_NAME}
     "Logger.cpp")
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_ttf SDL2_image)
+
+add_subdirectory("lib/cpputest")
+add_subdirectory("tests")
 
 message(
     "CMAKE_C_COMPILER:      ${CMAKE_C_COMPILER}\n"
