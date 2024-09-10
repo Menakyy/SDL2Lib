@@ -1,13 +1,11 @@
 #ifndef TEXTFIELD
 #define TEXTFIELD
 
-#include "Interfaces/Renderable.h"
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-class TextField : public Renderable
+class TextField
 {
 public:
     TextField(SDL_Renderer*      renderer,
@@ -17,10 +15,10 @@ public:
               TTF_Font*          font);
     ~TextField();
 
-    void render() const override;
+    void render() const;
     void setText(const std::string& newText);
 
-    void setRect(const SDL_Rect& rect) override;
+    void setRect(const SDL_Rect& rect);
     void setColor(const SDL_Color& color);
 
 private:
