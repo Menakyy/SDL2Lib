@@ -1,15 +1,22 @@
 cmake_minimum_required(VERSION 3.20)
 project("GLTests")
 
+include(CTest)
 
 set(SRC_FILES
-    "../Window.cpp"
     "../SDLSystem.cpp"
+    "../Window.cpp"
+    "../Line.cpp"
+    "../Image.cpp"
+    "../TextField.cpp"
 )
 
 add_executable(${PROJECT_NAME}
     "testAppMain.cpp"
     "WindowTests.cpp"
+    "LineTests.cpp"
+    "ImageTests.cpp"
+    "TextFieldTests.cpp"
     ${SRC_FILES}
 )
 

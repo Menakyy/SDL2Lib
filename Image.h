@@ -20,6 +20,8 @@ public:
 
     SDL_Rect& getSrcRect() { return ImageSrcRect; }
 
+    SDL_Texture* getTexture() { return texture; }
+
 private:
     SDL_Renderer* renderer = nullptr;
     SDL_Texture*  texture  = nullptr;

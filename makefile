@@ -4,6 +4,9 @@ run:
 	./build/bin/$(PROJECT_NAME)
 
 build_project:
-	cd build/ && ninja
+	cd build/ && make -j
 
 rebuild_and_run: build_project run
+
+run_test:
+	./build/bin/GLTests -v

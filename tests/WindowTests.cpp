@@ -1,11 +1,11 @@
-#include "Window.h"
-#include "SDLSystem.h"
 #include "CppUTest/TestHarness.h"
+#include "SDLSystem.h"
+#include "Window.h"
 
 TEST_GROUP(WindowTestsGroup)
 {
     SDLSystem* sdlSystem = nullptr;
-    Window* window = nullptr;
+    Window*    window    = nullptr;
 
     void setup()
     {
@@ -26,26 +26,26 @@ TEST(WindowTestsGroup, WindowCreation)
     CHECK(window->getWindow() != nullptr);
 }
 
-// TEST(WindowTestsGroup, SetSizeTest)
-// {
-//     size_t newWidth = 1024;
-//     size_t newHeight = 768;
+TEST(WindowTestsGroup, SetSizeTest)
+{
+    size_t newWidth  = 1024;
+    size_t newHeight = 768;
 
-//     window->setSize(newWidth, newHeight);
+    window->setSize(newWidth, newHeight);
 
-//     size_t actualWidth, actualHeight;
-//     window->getSize(actualWidth, actualHeight);
+    size_t actualWidth, actualHeight;
+    window->getSize(actualWidth, actualHeight);
 
-//     CHECK_EQUAL(newWidth, actualWidth);
-//     CHECK_EQUAL(newHeight, actualHeight);
-// }
+    CHECK_EQUAL(newWidth, actualWidth);
+    CHECK_EQUAL(newHeight, actualHeight);
+}
 
-// TEST(WindowTestsGroup, GetSizeInitialTest)
-// {
-//     size_t width, height;
+TEST(WindowTestsGroup, GetSizeInitialTest)
+{
+    size_t width, height;
 
-//     window->getSize(width, height);
+    window->getSize(width, height);
 
-//     CHECK_EQUAL(800, width);
-//     CHECK_EQUAL(600, height);
-// }
+    CHECK_EQUAL(800, width);
+    CHECK_EQUAL(600, height);
+}

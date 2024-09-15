@@ -21,6 +21,10 @@ public:
     void setRect(const SDL_Rect& rect);
     void setColor(const SDL_Color& color);
 
+    const SDL_Rect& getRect() const { return textRect; }
+    const SDL_Color& getColor() const { return textColor; }
+    const std::string& getText() const { return text; }
+
 private:
     void createTextField();
 
