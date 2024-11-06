@@ -1,37 +1,66 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle(SDL_Renderer* renderer, const SDL_Rect& rect)
-    : renderer(renderer)
-{
-    rects.push_back(rect);
-}
+#include "Logger.h"
+#include "Utilities.h"
 
-Rectangle::Rectangle(SDL_Renderer* renderer, const std::vector<SDL_Rect>& rects)
-    : renderer(renderer), rects(rects)
+Rectangle::Rectangle(const Point& position, const Size& size, const Color& color, bool fill)
+    : ShapeView(position, size, color, fill)
 {
 }
 
-Rectangle::~Rectangle()
+void Rectangle::render()
 {
-}
-
-void Rectangle::addRect(const SDL_Rect& rect)
-{
-    rects.push_back(rect);
+    if (fill)
+    {
+        renderFilled();
+    }
+    else
+    {
+        renderOutline();
+    }
 }
 
 void Rectangle::renderFilled() const
 {
-    if (!rects.empty())
+    if (renderer != nullptr)
     {
-        SDL_RenderFillRects(renderer, rects.data(), rects.size());
+        SDL_SetRenderDrawColor(renderer, color.getR(), color.getG(), color.getB(), color.getA());
+        SDL_Rect rect = Utilities::convertToSDLRect(position, size);
+        // Logger::getInstance().log("Rendering filled rectangle at position: " + std::to_string(position.getX()) + ", "
+        //                           + std::to_string(position.getY()) + " with size: " +
+        //                           std::to_string(size.getWidth())
+        //                           + ", " + std::to_string(size.getHeight()));
+        SDL_RenderFillRect(renderer, &rect);
     }
 }
 
 void Rectangle::renderOutline() const
 {
-    if (!rects.empty())
+    if (renderer != nullptr)
     {
-        SDL_RenderDrawRects(renderer, rects.data(), rects.size());
+        SDL_SetRenderDrawColor(renderer, color.getR(), color.getG(), color.getB(), color.getA());
+        SDL_Rect rect = Utilities::convertToSDLRect(position, size);
+        // Logger::getInstance().log("Rendering outline rectangle at position: " + std::to_string(position.getX()) + ",
+        // "
+        //                           + std::to_string(position.getY()) + " with size: " +
+        //                           std::to_string(size.getWidth())
+        //                           + ", " + std::to_string(size.getHeight()));
+        SDL_RenderDrawRect(renderer, &rect);
     }
 }
+
+SDL_Rect Rectangle::getRect() const
+{
+    return Utilities::convertToSDLRect(position, size);
+}
+
+void Rectangle::setRenderer(SDL_Renderer* renderer)
+{
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null");
+        return;
+    }
+    this->renderer = renderer;
+}
+

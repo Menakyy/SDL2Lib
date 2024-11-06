@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Window::Window(const std::string& title, size_t position_x, size_t position_y, size_t width, size_t height, Uint32 flags)
+Window::Window(const std::string& title, int position_x, int position_y, int width, int height, Uint32 flags)
 {
     window = SDL_CreateWindow(title.c_str(), position_x, position_y, width, height, flags);
 
@@ -22,15 +22,16 @@ SDL_Window* Window::getWindow() const
     return window;
 }
 
-void Window::setSize(size_t width, size_t height)
+void Window::setSize(int width, int height)
 {
     SDL_SetWindowSize(window, width, height);
 }
 
-void Window::getSize(size_t& width, size_t& height) const
+void Window::getSize(int& width, int& height) const
 {
-    int w, h;
-    SDL_GetWindowSize(window, &w, &h);
-    width  = w;
-    height = h;
+    int windowW;
+    int windowH;
+    SDL_GetWindowSize(window, &windowW, &windowH);
+    width  = windowW;
+    height = windowH;
 }

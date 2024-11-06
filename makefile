@@ -1,12 +1,65 @@
-PROJECT_NAME=SDL_Project 
+PROJECT_NAME=SDL_Project
+BUILD_DIR=build
+CMAKE_GENERATOR='Unix Makefiles'
+CMAKE_OPTIONS=-G $(CMAKE_GENERATOR)
+PROGRAM_TO_BUILD=make
+PROGRAM_TO_COVERAGE_SCRIPT=gcc
+
+ifeq ($(CMAKE_GENERATOR),Ninja)
+	PROGRAM_TO_BUILD=ninja
+	PROGRAM_TO_COVERAGE_SCRIPT=ninja
+else ifeq ($(CMAKE_GENERATOR),Unix Makefiles)
+	PROGRAM_TO_BUILD=make
+	PROGRAM_TO_COVERAGE_SCRIPT=gcc
+endif
+
+all: clean configure build
+
+check: clean configure_all build run_tests
+
+configure:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake $(CMAKE_OPTIONS) ..
+
+configure_all:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake $(CMAKE_OPTIONS) -DTESTS=ON -DCLANG_TIDY=ON -DCODE_COVERAGE=ON -DENABLE_VALGRIND=ON ..
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+build:
+	@echo "Building project with $(PROGRAM_TO_BUILD)..."
+	@cd $(BUILD_DIR) && $(PROGRAM_TO_BUILD) -j
+	@echo "Build completed."
+.PHONY: build
+
 
 run:
-	./build/bin/$(PROJECT_NAME)
+	./$(BUILD_DIR)/bin/$(PROJECT_NAME)
 
-build_project:
-	cd build/ && make -j
+run_tests:
+	./$(BUILD_DIR)/bin/GLTests -v
 
-rebuild_and_run: build_project run
+rebuild_and_run: build run
 
-run_test:
-	./build/bin/GLTests -v
+rebuild_and_tests: build run_tests
+
+clang-format-all-files:
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) ! -path "./lib/*" ! -path "./$(BUILD_DIR)/*" -print -exec clang-format -i {} +
+
+coverage:
+	./scripts/coverage_html.sh $(PROGRAM_TO_COVERAGE_SCRIPT)
+
+help:
+	@echo "Available targets:"
+	@echo "  all                  	- Clean, configure, build, and run the project"
+	@echo "  configure            	- Configure the project"
+	@echo "  configure_all        	- Configure the project with tests and additional options"
+	@echo "  clean                	- Clean the build directory"
+	@echo "  build                	- Build the project"
+	@echo "  run                  	- Run the project"
+	@echo "  run_tests            	- Run tests"
+	@echo "  rebuild_and_run      	- Rebuild the project and run"
+	@echo "  rebuild_and_tests    	- Rebuild the project and run tests"
+	@echo "  clang-format-all-files - Format all files using clang-format"

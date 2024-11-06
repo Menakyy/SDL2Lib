@@ -1,34 +1,33 @@
-#ifndef TEXTINPUT
-#define TEXTINPUT
+#ifndef TEXTINPUT_H
+#define TEXTINPUT_H
+
+#include "View.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-class TextInput
+class TextInput : public View
 {
 public:
-    TextInput(SDL_Renderer* renderer, TTF_Font* font, SDL_Color color, SDL_Rect rect);
-
+    TextInput(const Point& position, const Size& size, TTF_Font* font, const SDL_Color& color);
     ~TextInput();
 
     void handleEvent(const SDL_Event& event);
-
-    void render();
+    void render() override;
+    void setRenderer(SDL_Renderer* renderer) override;
 
     std::string getText() const;
-
-    void clearText();
+    void        clearText();
+    void        createTexture();
 
 private:
-    SDL_Renderer* renderer    = nullptr;
-    TTF_Font*     font        = nullptr;
-    SDL_Color     textColor   = { 0, 0, 0, 0 };
-    SDL_Rect      textRect    = { 0, 0, 0, 0 };
-    SDL_Texture*  textTexture = nullptr;
-    std::string   inputText   = "";
-
-    void updateTexture();
+    SDL_Texture* textTexture  = nullptr;
+    TTF_Font*    font         = nullptr;
+    std::string  inputText    = "";
+    SDL_Color    textColor    = { 0, 0, 0, 0 };
+    SDL_Rect     textSrcRect  = { 0, 0, 0, 0 };
+    SDL_Rect     textDestRect = { 0, 0, 0, 0 };
 };
 
-#endif /* TEXTINPUT */
+#endif  // TEXTINPUT_H

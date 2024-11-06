@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Renderer::Renderer(SDL_Window* window, size_t index, Uint32 flags)
+Renderer::Renderer(SDL_Window* window, int index, Uint32 flags)
 {
     renderer = SDL_CreateRenderer(window, index, flags);
 
@@ -22,9 +22,19 @@ SDL_Renderer* Renderer::getRenderer() const
     return renderer;
 }
 
-void Renderer::setRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void Renderer::setRenderDrawColor(const Color& color)
 {
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    backgroundColor = color;
+    SDL_SetRenderDrawColor(renderer, color.getR(), color.getG(), color.getB(), color.getA());
+}
+
+void Renderer::applyRenderDrawColor()
+{
+    SDL_SetRenderDrawColor(renderer,
+                           backgroundColor.getR(),
+                           backgroundColor.getG(),
+                           backgroundColor.getB(),
+                           backgroundColor.getA());
 }
 
 void Renderer::setRenderTarget(SDL_Texture* texture)

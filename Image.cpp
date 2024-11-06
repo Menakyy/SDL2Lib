@@ -1,76 +1,74 @@
 #include "Image.h"
+
 #include "Logger.h"
 
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <memory>
 
-Image::Image(SDL_Renderer* renderer, const std::string& filePath) : renderer(renderer)
+Image::Image(const std::string& filePath, const Point& position, const Size& size)
+    : View(position, size),
+      imageFilePath(filePath)
 {
-    loadImage(filePath);
 }
 
 Image::~Image()
 {
-    if (texture)
+    if (texture != nullptr)
     {
         SDL_DestroyTexture(texture);
     }
 }
 
-void Image::loadImage(const std::string& filePath)
+void Image::tryLoadImage(const std::string& filePath)
 {
     SDL_Surface* surfacetmp = IMG_Load(filePath.c_str());
     if (surfacetmp == nullptr)
     {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        Logger::error(("Failed to load image: " + std::string(IMG_GetError())).c_str());
         return;
     }
+
     texture = SDL_CreateTextureFromSurface(renderer, surfacetmp);
-    SDL_FreeSurface(surfacetmp);
 
     if (texture == nullptr)
     {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        Logger::error(("Failed to create texture: " + std::string(SDL_GetError())).c_str());
     }
     else
     {
-        std::cout << "Image loaded successfully: " << filePath << std::endl;
+        Logger::error(("Image loaded successfully: " + filePath).c_str());
     }
 
+    ImageSrcRect = { 0, 0, surfacetmp->w, surfacetmp->h };
+    SDL_FreeSurface(surfacetmp);
+}
+
+void Image::setImageFilePath(const std::string& filePath)
+{
     imageFilePath = filePath;
 }
 
-void Image::render(const SDL_Rect* srcRect, const SDL_Rect* destRect) const
+std::string Image::getImageFilePath() const
+{
+    return imageFilePath;
+}
+
+void Image::render()
 {
     if (texture != nullptr)
     {
-        if (srcRect == nullptr || (srcRect->w == 0 && srcRect->h == 0))
-        {
-            SDL_RenderCopy(renderer, texture, nullptr, destRect);
-        }
-        else
-        {
-            SDL_RenderCopy(renderer, texture, srcRect, destRect);
-        }
+        ImageDestRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };
+        SDL_RenderCopy(renderer, texture, &ImageSrcRect, &ImageDestRect);
     }
 }
 
-void Image::render() const
+void Image::setRenderer(SDL_Renderer* renderer)
 {
-    render(&ImageSrcRect, &ImageDestRect);
-}
-
-void Image::setDestRect(const SDL_Rect& rect)
-{
-     std::string message = "Setting dest rect for image: " + imageFilePath + ", " + std::to_string(rect.x) + ", " + std::to_string(rect.y) + 
-                          ", " + std::to_string(rect.w) + ", " + std::to_string(rect.h);
-    // Logger::getInstance().log(message);
-
-    ImageDestRect = rect;
-}
-
-void Image::setSrcRect(const SDL_Rect& rect)
-{
-    ImageSrcRect = rect;
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null");
+        return;
+    }
+    this->renderer = renderer;
 }

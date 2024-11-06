@@ -1,25 +1,25 @@
-#ifndef LINE
-#define LINE
+#ifndef LINE_H
+#define LINE_H
+
+#include "Point.h"
+#include "ShapeView.h"
 
 #include <SDL2/SDL.h>
 #include <vector>
 
-class Line
+class Line : public ShapeView
 {
 public:
-    Line(SDL_Renderer* renderer, int x1, int y1, int x2, int y2);
-    Line(SDL_Renderer* renderer, const SDL_Point& startPoint, const SDL_Point& endPoint);
-    Line(SDL_Renderer* renderer, const std::vector<std::pair<SDL_Point, SDL_Point>>& lines);
-    ~Line();
+    Line(const Point& startPoint, const Point& endPoint, const Color& color);
+    Line(const std::vector<std::pair<Point, Point>>& lines, const Color& color);
 
-    void addLine(const SDL_Point& startPoint, const SDL_Point& endPoint);
-    void render() const;
-    void setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+    void addLine(const Point& startPoint, const Point& endPoint);
+    void render() override;
+
+    void setRenderer(SDL_Renderer* renderer) override;
 
 private:
-    SDL_Renderer*                                renderer = nullptr;
-    std::vector<std::pair<SDL_Point, SDL_Point>> lines;
+    std::vector<std::pair<Point, Point>> lines;
 };
 
-
-#endif /* LINE */
+#endif  // LINE_H

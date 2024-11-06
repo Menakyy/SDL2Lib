@@ -1,17 +1,21 @@
 #ifndef RENDERER
 #define RENDERER
 
+#include "Color.h"
+
 #include <SDL2/SDL.h>
 
 class Renderer
 {
 public:
-    Renderer(SDL_Window* window, size_t index, Uint32 flags);
+    Renderer(SDL_Window* window, int index, Uint32 flags);
     ~Renderer();
 
     SDL_Renderer* getRenderer() const;
 
-    void setRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+    void setRenderDrawColor(const Color& color);
+
+    void applyRenderDrawColor();
 
     void setRenderTarget(SDL_Texture* texture);
 
@@ -21,8 +25,9 @@ public:
     void copy(SDL_Texture* texture, const SDL_Rect& srcrect, const SDL_Rect& dstrect) const;
 
 private:
-    SDL_Window*   window   = nullptr;
-    SDL_Renderer* renderer = nullptr;
+    SDL_Window*   window          = nullptr;
+    SDL_Renderer* renderer        = nullptr;
+    Color         backgroundColor = { 0, 0, 0, 255 };
 };
 
 
