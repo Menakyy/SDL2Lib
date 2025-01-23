@@ -1,81 +1,65 @@
-#include "CppUTest/TestHarness.h"
 #include "Image.h"
+#include "Logger.h"
+#include "Renderer.h"
 #include "SDLSystem.h"
+#include "Window.h"
 
-TEST_GROUP(ImageTestsGroup)
+#include <CppUTest/TestHarness.h>
+
+TEST_GROUP(ImageTest)
 {
-    SDLSystem*        sdlSystem        = nullptr;
-    SDL_Renderer*     renderer         = nullptr;
-    Image*            image            = nullptr;
-    const std::string validImagePath   = "tests/images/Rock.png";
-    const std::string invalidImagePath = "invalid_image_path.png";
+    SDLSystem* sdlSystem = nullptr;
+    Window*    window = nullptr;
+    Renderer*  renderer = nullptr;
+    Image*     image = nullptr;
 
     void setup()
     {
         sdlSystem = new SDLSystem(SDL_INIT_VIDEO);
-        SDL_Window* window =
-            SDL_CreateWindow("TestWindow", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        window    = new Window("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+        renderer  = new Renderer(window->getWindow(), -1, SDL_RENDERER_ACCELERATED);
+        image     = new Image("tests/images/Person_3.png", { 220, 205 }, { 70, 200 });
+        image->setRenderer(renderer->getRenderer());
     }
 
     void teardown()
     {
-        if (image != nullptr)
-        {
-            delete image;
-        }
-        SDL_DestroyRenderer(renderer);
+        delete image;
+        delete renderer;
+        delete window;
         delete sdlSystem;
     }
 };
 
-TEST(ImageTestsGroup, ImageCreationSuccess)
+TEST(ImageTest, LoadImage)
 {
-    image = new Image(renderer, validImagePath);
-    CHECK(image != nullptr);
+    image->tryLoadImage("tests/images/Person_3.png");
+    CHECK_TRUE(image->getTexture() != nullptr);
 }
 
-TEST(ImageTestsGroup, ImageCreationFailure)
+TEST(ImageTest, RenderImage)
 {
-    image = new Image(renderer, invalidImagePath);
-    CHECK(image != nullptr);
-    CHECK(image->getTexture() == nullptr);
-}
-
-TEST(ImageTestsGroup, RenderImageTest)
-{
-    image = new Image(renderer, validImagePath);
-
-    SDL_Rect destRect = { 100, 100, 200, 200 };
-    image->setDestRect(destRect);
-
+    image->tryLoadImage("tests/images/Person_3.png");
     image->render();
 }
 
-TEST(ImageTestsGroup, SetDestRectTest)
+TEST(ImageTest, SetImageFilePath)
 {
-    image = new Image(renderer, validImagePath);
-
-    SDL_Rect destRect = { 50, 50, 300, 300 };
-    image->setDestRect(destRect);
-
-    SDL_Rect expectedRect = { 50, 50, 300, 300 };
-    CHECK_EQUAL(destRect.x, expectedRect.x);
-    CHECK_EQUAL(destRect.y, expectedRect.y);
-    CHECK_EQUAL(destRect.w, expectedRect.w);
-    CHECK_EQUAL(destRect.h, expectedRect.h);
+    std::string newPath = "tests/images/NewImage.png";
+    image->setImageFilePath(newPath);
+    STRCMP_EQUAL(newPath.c_str(), image->getImageFilePath().c_str());
 }
 
-TEST(ImageTestsGroup, SetSrcRectTest)
+TEST(ImageTest, ChangePosition)
 {
-    image = new Image(renderer, validImagePath);
+    image->setPosition({ 100, 100 });
+    CHECK_EQUAL(100, image->getPosition().getX());
+    CHECK_EQUAL(100, image->getPosition().getY());
+}
 
-    SDL_Rect srcRect = { 10, 10, 100, 100 };
-    image->setSrcRect(srcRect);
-
-    SDL_Rect expectedRect = { 10, 10, 100, 100 };
-    CHECK_EQUAL(srcRect.x, expectedRect.x);
-    CHECK_EQUAL(srcRect.y, expectedRect.y);
-    CHECK_EQUAL(srcRect.w, expectedRect.w);
-    CHECK_EQUAL(srcRect.h, expectedRect.h);
+TEST(ImageTest, ChangeSize)
+{
+    image->setSize({ 200, 200 });
+    CHECK_EQUAL(200, image->getSize().getWidth());
+    CHECK_EQUAL(200, image->getSize().getHeight());
 }

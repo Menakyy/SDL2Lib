@@ -8,20 +8,20 @@
 class Window
 {
 public:
-    Window(const std::string& title, size_t position_x, size_t position_y, size_t width, size_t height, Uint32 flags);
+    Window(const std::string& title, int position_x, int position_y, int width, int height, Uint32 flags);
     ~Window();
 
     SDL_Window* getWindow() const;
-    void setSize(size_t width, size_t height);
-    void getSize(size_t& width, size_t& height) const;
+    void        setSize(int width, int height);
+    void        getSize(int& width, int& height) const;
 
 private:
     SDL_Window*   window   = nullptr;
     SDL_Renderer* renderer = nullptr;
 
     std::string text   = "";
-    size_t      width  = 0;
-    size_t      height = 0;
+    int         width  = 0;
+    int         height = 0;
 };
 
 

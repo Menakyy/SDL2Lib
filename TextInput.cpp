@@ -1,21 +1,22 @@
 #include "TextInput.h"
+
 #include "Logger.h"
 
-TextInput::TextInput(SDL_Renderer* renderer, TTF_Font* font, SDL_Color color, SDL_Rect rect)
-    : renderer(renderer),
+TextInput::TextInput(const Point& position, const Size& size, TTF_Font* font, const SDL_Color& color)
+    : View(position, size),
       font(font),
-      textColor(color),
-      textRect(rect),
-      inputText("")
+      textColor(color)
 {
     SDL_StartTextInput();
-    updateTexture();
 }
 
 TextInput::~TextInput()
 {
     SDL_StopTextInput();
-    SDL_DestroyTexture(textTexture);
+    if (textTexture != nullptr)
+    {
+        SDL_DestroyTexture(textTexture);
+    }
 }
 
 void TextInput::handleEvent(const SDL_Event& event)
@@ -23,18 +24,22 @@ void TextInput::handleEvent(const SDL_Event& event)
     if (event.type == SDL_TEXTINPUT)
     {
         inputText += event.text.text;
-        updateTexture();
+        createTexture();
     }
     else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
     {
         inputText.pop_back();
-        updateTexture();
+        createTexture();
     }
 }
 
 void TextInput::render()
 {
-    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+    if (textTexture != nullptr)
+    {
+        SDL_Rect destRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };
+        SDL_RenderCopy(renderer, textTexture, &textSrcRect, &destRect);
+    }
 }
 
 std::string TextInput::getText() const
@@ -45,21 +50,43 @@ std::string TextInput::getText() const
 void TextInput::clearText()
 {
     inputText = "";
-    updateTexture();
+    createTexture();
 }
 
-void TextInput::updateTexture()
+void TextInput::createTexture()
 {
     if (textTexture != nullptr)
     {
         SDL_DestroyTexture(textTexture);
     }
+    if (inputText.empty())
+    {
+        return;
+    }
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, inputText.c_str(), textColor);
-    textTexture              = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (textSurface == nullptr)
+    {
+        Logger::error(("Failed to create text input surface: " + std::string(SDL_GetError())).c_str());
+        return;
+    }
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (textSurface == nullptr)
+    {
+        Logger::error(("Failed to create text input texture: " + std::string(SDL_GetError())).c_str());
+    }
+    else
+    {
+        textSrcRect = { 0, 0, textSurface->w, textSurface->h };
+    }
     SDL_FreeSurface(textSurface);
+}
 
-    SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
-
-    std::string message = "Text: " + inputText;
-    Logger::getInstance().log(message);
+void TextInput::setRenderer(SDL_Renderer* renderer)
+{
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null");
+        return;
+    }
+    this->renderer = renderer;
 }

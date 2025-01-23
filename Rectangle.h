@@ -1,23 +1,29 @@
 #ifndef RECTANGLE
 #define RECTANGLE
 
+#include "Color.h"
+#include "ShapeView.h"
+
 #include <SDL2/SDL.h>
 #include <vector>
 
-class Rectangle
+class Rectangle : public ShapeView
 {
 public:
-    Rectangle(SDL_Renderer* renderer, const SDL_Rect& rect);
-    Rectangle(SDL_Renderer* renderer, const std::vector<SDL_Rect>& rects);
-    ~Rectangle();
+    Rectangle(const Point& position, const Size& size, const Color& color, bool fill);
 
-    void addRect(const SDL_Rect& rect);
+    void render() override;
+
+    void setRenderer(SDL_Renderer* renderer) override;
+
+    SDL_Rect getRect() const;
+
+private:
     void renderFilled() const;
     void renderOutline() const;
 
 private:
-    SDL_Renderer*         renderer = nullptr;
-    std::vector<SDL_Rect> rects;
+    SDL_Renderer* renderer = nullptr;
 };
 
 

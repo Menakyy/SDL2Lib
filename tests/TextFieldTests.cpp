@@ -1,94 +1,62 @@
-#include "CppUTest/TestHarness.h"
-#include "SDLSystem.h"
 #include "TextField.h"
+#include "Logger.h"
+#include "Renderer.h"
+#include "SDLSystem.h"
+#include "Window.h"
+#include "FontManager.h"
 
-#include <stdexcept>
+#include <CppUTest/TestHarness.h>
 
-TEST_GROUP(TextFieldTestsGroup)
+TEST_GROUP(TextFieldTest)
 {
-    SDLSystem*        sdlSystem   = nullptr;
-    SDL_Renderer*     renderer    = nullptr;
-    TTF_Font*         font        = nullptr;
-    TextField*        textField   = nullptr;
-    SDL_Color         white       = { 255, 255, 255, 255 };
-    SDL_Rect          rect        = { 100, 100, 200, 50 };
-    const std::string initialText = "Hello, World!";
+    SDLSystem* sdlSystem = nullptr;
+    Window*    window = nullptr;
+    Renderer*  renderer = nullptr;
+    TextField* textField = nullptr;
+    std::shared_ptr<TTF_Font> font;
 
     void setup()
     {
-        sdlSystem = new SDLSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-        SDL_Window* window =
-            SDL_CreateWindow("TestWindow", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-        font = TTF_OpenFont("tests/fonts/LiberationSans-Bold.ttf", 24);
-        if (!font) {
-            FAIL("Failed to load font");
-        }
+        sdlSystem = new SDLSystem(SDL_INIT_VIDEO);
+        window    = new Window("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+        renderer  = new Renderer(window->getWindow(), -1, SDL_RENDERER_ACCELERATED);
+        font      = FontManager::loadFont("tests/fonts/LiberationSans-Bold.ttf", 24);
+        textField = new TextField("Test Text", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.get());
+        textField->setRenderer(renderer->getRenderer());
+        textField->createTexture();
     }
 
     void teardown()
     {
-        if (textField)
-        {
-            delete textField;
-        }
-
-        if (font)
-        {
-            TTF_CloseFont(font);
-        }
-
-        SDL_DestroyRenderer(renderer);
-        TTF_Quit();
+        delete textField;
+        delete renderer;
+        delete window;
         delete sdlSystem;
     }
 };
 
-TEST(TextFieldTestsGroup, TextFieldCreation)
+TEST(TextFieldTest, CreateTextField)
 {
-    textField = new TextField(renderer, initialText, rect, white, font);
-    CHECK(textField != nullptr);
+    // textField->createTexture();
+    STRCMP_EQUAL("Test Text", textField->getText().c_str());
 }
 
-TEST(TextFieldTestsGroup, RenderTextField)
+TEST(TextFieldTest, RenderTextField)
 {
-    textField = new TextField(renderer, initialText, rect, white, font);
+    // textField->createTexture();
     textField->render();
 }
 
-TEST(TextFieldTestsGroup, SetTextTest)
+TEST(TextFieldTest, ChangePosition)
 {
-    textField                 = new TextField(renderer, initialText, rect, white, font);
-    const std::string newText = "New Text";
-
-    textField->setText(newText);
-
-    CHECK_EQUAL(newText, textField->getText());
+    textField->setPosition({ 100, 100 });
+    CHECK_EQUAL(100, textField->getPosition().getX());
+    CHECK_EQUAL(100, textField->getPosition().getY());
 }
 
-TEST(TextFieldTestsGroup, SetRectTest)
+TEST(TextFieldTest, ChangeSize)
 {
-    textField        = new TextField(renderer, initialText, rect, white, font);
-    SDL_Rect newRect = { 50, 50, 150, 40 };
-
-    textField->setRect(newRect);
-
-    CHECK_EQUAL(newRect.x, textField->getRect().x);
-    CHECK_EQUAL(newRect.y, textField->getRect().y);
-    CHECK_EQUAL(newRect.w, textField->getRect().w);
-    CHECK_EQUAL(newRect.h, textField->getRect().h);
-}
-
-TEST(TextFieldTestsGroup, SetColorTest)
-{
-    textField          = new TextField(renderer, initialText, rect, white, font);
-    SDL_Color newColor = { 0, 0, 255, 255 };
-
-    textField->setColor(newColor);
-
-    CHECK_EQUAL(newColor.r, textField->getColor().r);
-    CHECK_EQUAL(newColor.g, textField->getColor().g);
-    CHECK_EQUAL(newColor.b, textField->getColor().b);
-    CHECK_EQUAL(newColor.a, textField->getColor().a);
+    textField->setSize({ 200, 200 });
+    CHECK_EQUAL(200, textField->getSize().getWidth());
+    CHECK_EQUAL(200, textField->getSize().getHeight());
 }

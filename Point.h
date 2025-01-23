@@ -7,17 +7,19 @@
 class Point
 {
 public:
-    Point(SDL_Renderer* renderer, int x, int y);
-    Point(SDL_Renderer* renderer, const SDL_Point& point);
-    Point(SDL_Renderer* renderer, const std::vector<SDL_Point>& points);
-    ~Point();
+    int x, y;
 
-    void addPoint(const SDL_Point& point);
-    void render() const;
+    Point() : x(0), y(0) {}
 
-private:
-    SDL_Renderer*          renderer = nullptr;
-    std::vector<SDL_Point> points;
+    Point(int x, int y) : x(x), y(y) {}
+
+    int getX() const { return x; }
+
+    int getY() const { return y; }
+
+    void setX(int x) { this->x = x; }
+
+    void setY(int y) { this->y = y; }
 };
 
 

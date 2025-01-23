@@ -1,42 +1,31 @@
-#ifndef TEXTFIELD
-#define TEXTFIELD
+#ifndef TEXTFIELD_H
+#define TEXTFIELD_H
+
+#include "Color.h"
+#include "View.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-class TextField
+class TextField : public View
 {
 public:
-    TextField(SDL_Renderer*      renderer,
-              const std::string& text,
-              const SDL_Rect&    rect,
-              const SDL_Color&   color,
-              TTF_Font*          font);
+    TextField(const std::string& text, const Point& position, const Size& size, const Color& color, TTF_Font* font);
     ~TextField();
 
-    void render() const;
-    void setText(const std::string& newText);
+    void render() override;
+    void setRenderer(SDL_Renderer* renderer) override;
+    void createTexture();
 
-    void setRect(const SDL_Rect& rect);
-    void setColor(const SDL_Color& color);
-
-    const SDL_Rect& getRect() const { return textRect; }
-    const SDL_Color& getColor() const { return textColor; }
-    const std::string& getText() const { return text; }
+    std::string getText() const;
 
 private:
-    void createTextField();
-
-private:
-    SDL_Renderer* renderer    = nullptr;
-    SDL_Texture*  textTexture = nullptr;
-    TTF_Font*     font        = nullptr;
-
-    std::string text      = "";
-    SDL_Color   textColor = { 0, 0, 0, 0 };
-    SDL_Rect    textRect  = { 0, 0, 0, 0 };
+    SDL_Texture* textTexture = nullptr;
+    TTF_Font*    font        = nullptr;
+    std::string  text        = "";
+    Color        textColor   = { 0, 0, 0, 0 };
+    SDL_Rect     textSrcRect = { 0, 0, 0, 0 };
 };
 
-
-#endif /* TEXTFIELD */
+#endif  // TEXTFIELD_H

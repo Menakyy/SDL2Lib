@@ -1,41 +1,49 @@
 #include "Line.h"
-#include <utility>
 
-Line::Line(SDL_Renderer* renderer, int x1, int y1, int x2, int y2) 
-    : renderer(renderer)
-{
-    lines.push_back({ {x1, y1}, {x2, y2} });
-}
+#include "Logger.h"
 
-Line::Line(SDL_Renderer* renderer, const SDL_Point& startPoint, const SDL_Point& endPoint) 
-    : renderer(renderer)
+Line::Line(const Point& startPoint, const Point& endPoint, const Color& color)
+    : ShapeView(startPoint,
+                Size(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY()),
+                color,
+                false)
 {
     lines.push_back({ startPoint, endPoint });
 }
 
-Line::Line(SDL_Renderer* renderer, const std::vector<std::pair<SDL_Point, SDL_Point>>& lines) 
-    : renderer(renderer), lines(lines)
+Line::Line(const std::vector<std::pair<Point, Point>>& lines, const Color& color)
+    : ShapeView(lines.front().first,
+                Size(lines.front().second.getX() - lines.front().first.getX(),
+                     lines.front().second.getY() - lines.front().first.getY()),
+                color,
+                false),
+      lines(lines)
 {
 }
 
-Line::~Line()
-{
-}
-
-void Line::addLine(const SDL_Point& startPoint, const SDL_Point& endPoint)
+void Line::addLine(const Point& startPoint, const Point& endPoint)
 {
     lines.push_back({ startPoint, endPoint });
 }
 
-void Line::render() const
+void Line::render()
 {
-    for (const auto& line : lines)
+    if (renderer != nullptr)
     {
-        SDL_RenderDrawLine(renderer, line.first.x, line.first.y, line.second.x, line.second.y);
+        SDL_SetRenderDrawColor(renderer, color.getR(), color.getG(), color.getB(), color.getA());
+        for (const auto& line : lines)
+        {
+            SDL_RenderDrawLine(renderer, line.first.getX(), line.first.getY(), line.second.getX(), line.second.getY());
+        }
     }
 }
 
-void Line::setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void Line::setRenderer(SDL_Renderer* renderer)
 {
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null");
+        return;
+    }
+    this->renderer = renderer;
 }

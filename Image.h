@@ -1,37 +1,32 @@
 #ifndef IMAGE
 #define IMAGE
 
+#include "View.h"
+
 #include <SDL2/SDL.h>
 #include <memory>
 #include <string>
 
-class Image
+class Image : public View
 {
 public:
-    Image(SDL_Renderer* renderer, const std::string& filePath);
+    Image(const std::string& filePath, const Point& position, const Size& size);
     ~Image();
 
-    void render(const SDL_Rect* srcRect, const SDL_Rect* destRect) const;
-    void render() const;
-    void setDestRect(const SDL_Rect& rect);
-    void setSrcRect(const SDL_Rect& rect);
+    void render() override;
+    void setRenderer(SDL_Renderer* renderer) override;
 
-    SDL_Rect& getDestRect() { return ImageDestRect; }
+    void        tryLoadImage(const std::string& filePath);
+    void        setImageFilePath(const std::string& filePath);
+    std::string getImageFilePath() const;
 
-    SDL_Rect& getSrcRect() { return ImageSrcRect; }
-
-    SDL_Texture* getTexture() { return texture; }
+    SDL_Texture* getTexture() const { return texture; }
 
 private:
-    SDL_Renderer* renderer = nullptr;
-    SDL_Texture*  texture  = nullptr;
-
-    SDL_Rect ImageDestRect = { 0, 0, 0, 0 };
-    SDL_Rect ImageSrcRect  = { 0, 0, 0, 0 };
-
-    std::string imageFilePath = "";
-
-    void loadImage(const std::string& filePath);
+    SDL_Texture* texture       = nullptr;
+    SDL_Rect     ImageDestRect = { 0, 0, 0, 0 };
+    SDL_Rect     ImageSrcRect  = { 0, 0, 0, 0 };
+    std::string  imageFilePath = "";
 };
 
-#endif
+#endif  // IMAGE

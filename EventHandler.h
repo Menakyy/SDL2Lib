@@ -1,6 +1,8 @@
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
+#include "Point.h"
+
 #include <SDL2/SDL.h>
 
 class EventHandler
@@ -9,7 +11,7 @@ public:
     EventHandler();
     ~EventHandler();
 
-    bool      pollEvent();
+    int       pollEvent();
     SDL_Event getEvent() const;
 
     bool        isTextInput() const;
@@ -18,8 +20,22 @@ public:
     bool        isKeyUp() const;
     SDL_Keycode getKeyCode() const;
 
+    bool  isMouseButtonDown() const;
+    bool  isMouseButtonUp() const;
+    void  getMousePosition(int& x, int& y) const;
+    Point getMousePosition() const;
+
+    bool isPointInsideRect(const Point& point, const SDL_Rect& rect) const;
+
+    bool  isWindowEvent() const;
+    Uint8 getWindowEvent() const;
+
+    bool isShiftPressed() const;
+    bool isCtrlPressed() const;
+    bool isAltPressed() const;
+
 private:
     SDL_Event event;
 };
 
-#endif
+#endif  // EVENT_HANDLER_H

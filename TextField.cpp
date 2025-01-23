@@ -1,71 +1,90 @@
 #include "TextField.h"
 
-#include <iostream>
+#include "Logger.h"
+#include "Utilities.h"
+#include <stdexcept>
 
-TextField::TextField(SDL_Renderer*      renderer,
-                     const std::string& text,
-                     const SDL_Rect&    rect,
-                     const SDL_Color&   color,
+TextField::TextField(const std::string& text,
+                     const Point&       position,
+                     const Size&        size,
+                     const Color&       color,
                      TTF_Font*          font)
-    : renderer(renderer),
+    : View(position, size),
       text(text),
-      textRect(rect),
       textColor(color),
       font(font)
 {
-    createTextField();
 }
 
 TextField::~TextField()
 {
-    if (textTexture)
+    if (textTexture != nullptr)
     {
         SDL_DestroyTexture(textTexture);
     }
 }
 
-void TextField::render() const
+void TextField::createTexture()
 {
-    SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
-}
+    Logger::info(("Creating texture for text: " + text).c_str());
 
-void TextField::createTextField()
-{
-    if (textTexture)
+    if (textTexture != nullptr)
     {
         SDL_DestroyTexture(textTexture);
     }
 
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), textColor);
-    if (!surface)
+    if (text.empty())
     {
-        throw std::runtime_error("Failed to create text surface: " + std::string(TTF_GetError()));
+        Logger::error("Text is empty, skipping texture creation.");
+        return;
+    }
+
+    if (font == nullptr)
+    {
+        Logger::error("Font is null, cannot create texture.");
+        return;
+    }
+
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), Utilities::convertColorToSDLColor(textColor));
+    if (surface == nullptr)
+    {
+        Logger::error(("Failed to create text surface: " + std::string(TTF_GetError())).c_str());
+        return;
     }
 
     textTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (!textTexture)
+    if (textTexture == nullptr)
     {
-        SDL_FreeSurface(surface);
-        throw std::runtime_error("Failed to create text texture: " + std::string(SDL_GetError()));
+        Logger::error(("Failed to create text texture: " + std::string(SDL_GetError())).c_str());
+    }
+    else
+    {
+        textSrcRect = { 0, 0, surface->w, surface->h };
     }
 
     SDL_FreeSurface(surface);
 }
 
-void TextField::setText(const std::string& newText)
+std::string TextField::getText() const
 {
-    text = newText;
-    createTextField();
+    return text;
 }
 
-void TextField::setRect(const SDL_Rect& rect)
+void TextField::render()
 {
-    textRect = rect;
-    createTextField();
+    if (textTexture != nullptr)
+    {
+        SDL_Rect destRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };
+        SDL_RenderCopy(renderer, textTexture, nullptr, &destRect);
+    }
 }
 
-void TextField::setColor(const SDL_Color& color)
+void TextField::setRenderer(SDL_Renderer* renderer)
 {
-    textColor = color;
-    createTextField();
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null");
+        return;
+    }
+    this->renderer = renderer;
 }
