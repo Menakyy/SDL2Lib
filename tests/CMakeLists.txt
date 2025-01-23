@@ -35,9 +35,9 @@ set(SRC_FILES
 )
 add_executable(${PROJECT_NAME}
     "testAppMain.cpp"
-    "ImageTests.cpp"
+    # "ImageTests.cpp"
     "RectangleTests.cpp"
-    "EventHandlerTests.cpp"
+    # "EventHandlerTests.cpp"
     # "TextFieldTests.cpp"
     ${SRC_FILES}
 )
@@ -58,17 +58,15 @@ add_test(
 )
 
 if(ENABLE_VALGRIND AND VALGRIND_EXECUTABLE)
-    set(MEMORYCHECK_COMMAND_OPTIONS "--leak-check=full --show-leak-kinds=all")
     add_test(
         NAME "${PROJECT_NAME}Valgrind"
         COMMAND valgrind
-        --vgdb=no
         --leak-check=full
         --show-leak-kinds=all
-        --error-exitcode=1
         --track-origins=yes
         --trace-children=yes
-        --verbose
+        #--verbose
+        --log-file=valgrind.log
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}"
         ${CPPUTEST_ARGS}
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"

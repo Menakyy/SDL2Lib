@@ -15,7 +15,7 @@ endif
 
 all: clean configure build
 
-check: clean configure_all build run_tests
+check: clean configure_all build run_tests run_tests_valgrind
 
 configure:
 	mkdir -p $(BUILD_DIR)
@@ -29,7 +29,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 build:
-	@echo "Building project with $(PROGRAM_TO_BUILD)..."
+	@echo "\nBuilding project with $(PROGRAM_TO_BUILD)..."
 	@cd $(BUILD_DIR) && $(PROGRAM_TO_BUILD) -j
 	@echo "Build completed."
 .PHONY: build
@@ -39,7 +39,12 @@ run:
 	./$(BUILD_DIR)/bin/$(PROJECT_NAME)
 
 run_tests:
+	@echo "\nRunning tests..."
 	./$(BUILD_DIR)/bin/GLTests -v
+
+run_tests_valgrind:
+	@echo "\nRunning tests with valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --log-file=valgrind.log ./$(BUILD_DIR)/bin/GLTests
 
 rebuild_and_run: build run
 

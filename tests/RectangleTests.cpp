@@ -38,7 +38,7 @@ TEST(RectangleTest, PositionAndSize)
     CHECK_EQUAL(50, rectangle->getSize().getHeight());
 }
 
-TEST(RectangleTest, Color)
+TEST(RectangleTest, CheckColor)
 {
     Color color = rectangle->getColor();
     CHECK_EQUAL(255, color.getR());

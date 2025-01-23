@@ -2,6 +2,7 @@
 #define LOGGER
 
 #include <cstdarg>
+#include <cstdint>
 #include <ctime>
 #include <fstream>
 #include <iomanip>
@@ -11,8 +12,6 @@
 class Logger
 {
 public:
-    static constexpr uint16_t MAX_BUFFER_LENGTH = 256;
-
     enum class LogLevel
     {
         none,
@@ -34,9 +33,10 @@ public:
     static LogLevel getLoggerLevel();
 
 private:
-    static LogLevel      globalLogLevel;
-    static std::ofstream logFile;
-    static std::string   logFileName;
+    static LogLevel       globalLogLevel;
+    static std::ofstream  logFile;
+    static std::string    logFileName;
+    static const uint16_t MAX_BUFFER_LENGTH = 256;
 
     static std::string getLevelName(LogLevel logLevel);
     static void        log(const LogLevel logLevel, const char* format, va_list args);

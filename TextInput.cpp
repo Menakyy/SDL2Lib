@@ -26,7 +26,7 @@ void TextInput::handleEvent(const SDL_Event& event)
         inputText += event.text.text;
         createTexture();
     }
-    else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
+    else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && not inputText.empty())
     {
         inputText.pop_back();
         createTexture();

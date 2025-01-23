@@ -21,4 +21,5 @@ Checks: >
  -readability-identifier-length,
  -readability-use-anyofallof,
  -readability-function-cognitive-complexity,
+ -performance-avoid-endl,
 WarningsAsErrors: '*'
