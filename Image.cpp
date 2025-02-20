@@ -37,7 +37,7 @@ void Image::tryLoadImage(const std::string& filePath)
     }
     else
     {
-        Logger::error(("Image loaded successfully: " + filePath).c_str());
+        Logger::info(("Image loaded successfully: " + filePath).c_str());
     }
 
     ImageSrcRect = { 0, 0, surfacetmp->w, surfacetmp->h };
