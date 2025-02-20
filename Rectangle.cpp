@@ -63,4 +63,3 @@ void Rectangle::setRenderer(SDL_Renderer* renderer)
     }
     this->renderer = renderer;
 }
-

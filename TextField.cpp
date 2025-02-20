@@ -2,6 +2,7 @@
 
 #include "Logger.h"
 #include "Utilities.h"
+
 #include <stdexcept>
 
 TextField::TextField(const std::string& text,
