@@ -9,9 +9,9 @@
 TEST_GROUP(ImageTest)
 {
     SDLSystem* sdlSystem = nullptr;
-    Window*    window = nullptr;
-    Renderer*  renderer = nullptr;
-    Image*     image = nullptr;
+    Window*    window    = nullptr;
+    Renderer*  renderer  = nullptr;
+    Image*     image     = nullptr;
 
     void setup()
     {

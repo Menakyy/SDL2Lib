@@ -1,18 +1,18 @@
-#include "TextField.h"
+#include "FontManager.h"
 #include "Logger.h"
 #include "Renderer.h"
 #include "SDLSystem.h"
+#include "TextField.h"
 #include "Window.h"
-#include "FontManager.h"
 
 #include <CppUTest/TestHarness.h>
 
 TEST_GROUP(TextFieldTest)
 {
-    SDLSystem* sdlSystem = nullptr;
-    Window*    window = nullptr;
-    Renderer*  renderer = nullptr;
-    TextField* textField = nullptr;
+    SDLSystem*                sdlSystem = nullptr;
+    Window*                   window    = nullptr;
+    Renderer*                 renderer  = nullptr;
+    TextField*                textField = nullptr;
     std::shared_ptr<TTF_Font> font;
 
     void setup()

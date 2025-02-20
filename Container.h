@@ -3,8 +3,8 @@
 
 #include "View.h"
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 class Container : public View
 {

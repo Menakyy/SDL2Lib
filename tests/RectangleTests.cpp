@@ -8,8 +8,8 @@
 TEST_GROUP(RectangleTest)
 {
     SDLSystem* sdlSystem = nullptr;
-    Window*    window = nullptr;
-    Renderer*  renderer = nullptr;
+    Window*    window    = nullptr;
+    Renderer*  renderer  = nullptr;
     Rectangle* rectangle = nullptr;
 
     void setup()
