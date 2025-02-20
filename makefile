@@ -48,13 +48,14 @@ run_tests_valgrind:
 
 rebuild_and_run: build run
 
-rebuild_and_tests: build run_tests
+rebuild_and_tests: build run_tests run_tests_valgrind
 
 clang-format-all-files:
 	find . -type f \( -name "*.cpp" -o -name "*.h" \) ! -path "./lib/*" ! -path "./$(BUILD_DIR)/*" -print -exec clang-format -i {} +
 
 coverage:
 	./scripts/coverage_html.sh $(PROGRAM_TO_COVERAGE_SCRIPT)
+	open build/coverage/index.html > /dev/null 2>&1
 
 help:
 	@echo "Available targets:"
