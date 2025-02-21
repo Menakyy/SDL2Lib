@@ -1,0 +1,95 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "CMake: configure",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "${workspaceFolder}/build",
+                "-DTESTS=ON",
+                "-DCLANG_TIDY=ON",
+                "-DCODE_COVERAGE=ON",
+                "-DENABLE_VALGRIND=ON"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "CMake configure task"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: build",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build",
+                "--target",
+                "all",
+                "-j"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "CMake build task"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: run tests",
+            "command": "ctest",
+            "args": [
+                "--output-on-failure",
+                "-C",
+                "Debug",
+                "-T",
+                "test",
+                "${workspaceFolder}/build/bin/GLTests",
+                "-o",
+                "junit",
+                "-v"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "detail": "CMake run tests task"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: run tests with Valgrind",
+            "command": "valgrind",
+            "args": [
+                "--leak-check=full",
+                "--show-leak-kinds=all",
+                "--track-origins=yes",
+                "--trace-children=yes",
+                // "--verbose",
+                "--log-file=logs/valgrind.log",
+                "${workspaceFolder}/build/bin/GLTests",
+                "-o",
+                "junit",
+                "-v"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "detail": "CMake run tests with Valgrind task"
+        }
+    ]
+}
