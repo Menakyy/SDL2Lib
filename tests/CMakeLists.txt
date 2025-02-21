@@ -66,7 +66,7 @@ if(ENABLE_VALGRIND AND VALGRIND_EXECUTABLE)
         --track-origins=yes
         --trace-children=yes
         #--verbose
-        --log-file=valgrind.log
+        --log-file=logs/valgrind.log
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}"
         ${CPPUTEST_ARGS}
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"

@@ -44,7 +44,7 @@ run_tests:
 
 run_tests_valgrind:
 	@echo "\nRunning tests with valgrind..."
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --log-file=valgrind.log ./$(BUILD_DIR)/bin/GLTests
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --log-file=logs/valgrind.log ./$(BUILD_DIR)/bin/GLTests
 
 rebuild_and_run: build run
 
