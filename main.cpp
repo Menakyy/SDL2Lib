@@ -43,8 +43,7 @@ void test(Renderer& renderer);
 
 int main()
 {
-
-    Logger::initialize("log.txt", Logger::LogLevel::info);
+    Logger::initialize("logs/log.txt", Logger::LogLevel::info);
 
     SDLSystem sdl(SDL_INIT_VIDEO);
     Window    window("SDL2",
