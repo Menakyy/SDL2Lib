@@ -4,28 +4,28 @@ PROJECT_ROOT=$(realpath "$(dirname "$0")/..")
 cd "$PROJECT_ROOT"
 
 if [ $# -lt 1 ] ; then
-	echo "usage: lcov.sh gcc|clang"
-	echo -e "\t Select compiler used to generate coverage data!"
-	exit 1
+    echo "usage: coverage_html.sh gcc|clang"
+    echo -e "\t Select compiler used to generate coverage data!"
+    exit 1
 fi
 COMPILER="$1"
 if [ "$1" == "clang" ] ; then
-	LCOV_ARGS="--gcov-tool $(realpath scripts/gcov-llvm-wrapper.sh)"
+    GCOV_TOOL="llvm-cov gcov"
 elif [ "$1" == "gcc" ] ; then
-	LCOV_ARGS=""
+    GCOV_TOOL="gcov"
 else
-	echo "usage: lcov.sh gcc|clang"
-	echo -e "\tInvalid argument!"
-	exit 2
+    echo "usage: coverage_html.sh gcc|clang"
+    echo -e "\tInvalid argument!"
+    exit 2
 fi
 
 BUILD_POSTFIX="$2"
 
 cd "build$BUILD_POSTFIX"
-lcov -d . --capture -o coverage.info $LCOV_ARGS
+lcov -d . --gcov-tool "$GCOV_TOOL" --capture -o coverage.info --ignore-errors mismatch --rc geninfo_unexecuted_blocks=1
 lcov -r coverage.info \
-	"/usr/include/*" \
-	"*cpputest*" \
-	-o filtered.info $LCOV_ARGS
+    "/usr/include/*" \
+    "*cpputest*" \
+    -o filtered.info
 genhtml -o coverage filtered.info --demangle-cpp
 # rm coverage.info filtered.info
