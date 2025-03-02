@@ -8,6 +8,11 @@
 class SoundManager
 {
 public:
+
+    static constexpr int kDefaultFrequency = 44100;
+    static constexpr int kChunkSize = 2048;
+    static constexpr int kDefaultChannels = 2;
+
     static bool init();
     static void cleanup();
 
