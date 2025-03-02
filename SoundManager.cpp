@@ -7,7 +7,7 @@ Mix_Music*                                  SoundManager::music = nullptr;
 
 bool SoundManager::init()
 {
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    if (Mix_OpenAudio(kDefaultFrequency, MIX_DEFAULT_FORMAT, kDefaultChannels, kChunkSize) < 0)
     {
         Logger::error(("SDL_mixer could not initialize! SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
         return false;
