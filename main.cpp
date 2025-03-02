@@ -14,6 +14,7 @@
 #include "TextInput.h"
 #include "Utilities.h"
 #include "Window.h"
+#include "SoundManager.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -39,6 +40,7 @@ void clickToRemoveRectangle(Container& container, Renderer& renderer);
 void loopPresentation(Container& container, Renderer& renderer);
 void loadImages(Container& container, Renderer& renderer);
 void widgetTest(Container& container, Renderer& renderer);
+void soundTest();
 void test(Renderer& renderer);
 
 int main()
@@ -64,7 +66,8 @@ int main()
     // loopPresentation(container, renderer);
     // loadImages(container, renderer);
     // test(renderer);
-    widgetTest(container, renderer);
+    // widgetTest(container, renderer);
+    soundTest();
 
     SDL_Quit();
 
@@ -438,5 +441,23 @@ void widgetTest(Container& container, Renderer& renderer)
     }
     SDL_Quit();
 }
+
+void soundTest()
+{
+    SoundManager::init();
+
+    bool status = SoundManager::loadSound("guitar", "sounds/guitar.mp3");
+
+    if(not status)
+    {
+        Logger::error("Failed to load sound");
+        return;
+    }
+
+    SoundManager::playSound("guitar");
+
+    SDL_Delay(5000);
+}
+
 
 // NOLINTEND

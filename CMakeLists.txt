@@ -57,7 +57,8 @@ add_executable(${PROJECT_NAME}
     "Widget.cpp"
     "Utilities.cpp"
     "Button.cpp"
-    "AbstractCallback.cpp")
+    "AbstractCallback.cpp"
+    "SoundManager.cpp")
 
 if(CODE_COVERAGE)
     target_compile_options(${PROJECT_NAME} PUBLIC --coverage)
@@ -68,7 +69,7 @@ if(CODE_COVERAGE)
     )
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_ttf SDL2_image)
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_ttf SDL2_image SDL2_mixer)
 
 if(CLANG_TIDY)
     set_target_properties(${PROJECT_NAME} PROPERTIES CXX_CLANG_TIDY "clang-tidy")
