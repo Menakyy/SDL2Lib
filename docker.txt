@@ -1,0 +1,7 @@
+docker build -t game:0.1 .              // build image
+sudo docker run -i game:0.1 /bin/bash   // run image
+
+docker-compose up --build               // build and run image by docker-compose
+
+docker system prune -a --volumes        // delete all images
+docker ps -a                            // show all images
