@@ -22,7 +22,7 @@ fi
 BUILD_POSTFIX="$2"
 
 cd "build$BUILD_POSTFIX"
-lcov -d . --gcov-tool "$GCOV_TOOL" --capture -o coverage.info --ignore-errors mismatch --rc geninfo_unexecuted_blocks=1
+lcov -d . --gcov-tool "$GCOV_TOOL" --capture -o coverage.info
 lcov -r coverage.info \
     "/usr/include/*" \
     "*cpputest*" \
