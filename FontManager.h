@@ -9,15 +9,17 @@
 class FontManager
 {
 public:
-    static std::shared_ptr<TTF_Font> loadFont(const std::string& fontPath, int fontSize)
-    {
-        TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-        if (font == nullptr)
-        {
-            throw std::runtime_error("Failed to load font: " + std::string(TTF_GetError()));
-        }
-        return std::shared_ptr<TTF_Font>(font, TTF_CloseFont);
-    }
+    FontManager(const std::string& fontPath, int fontSize);
+    ~FontManager();
+
+    void init();
+
+    TTF_Font* getFont() const { return font; }
+
+private:
+    TTF_Font*   font     = nullptr;
+    int         fontSize = 0;
+    std::string fontPath = "";
 };
 
 

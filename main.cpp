@@ -76,9 +76,11 @@ int main()
 
 void enterText(Container& container, Renderer& renderer)
 {
-    auto      font = FontManager::loadFont("fonts/LiberationSans-Bold.ttf", 24);
-    TextField promptText("Wpisz: test", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.get());
-    TextInput textInput({ 50, 150 }, { 50, 100 }, font.get(), { 255, 255, 255, 255 });
+    FontManager font("fonts/LiberationSans-Bold.ttf", 24);
+    font.init();
+
+    TextField promptText("Wpisz: test", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.getFont());
+    TextInput textInput({ 50, 150 }, { 50, 100 }, font.getFont(), { 255, 255, 255, 255 });
 
     container.addChild(&promptText);
     container.addChild(&textInput);
@@ -205,9 +207,11 @@ void loopPresentation(Container& container, Renderer& renderer)
 
     Image image("pngs/Person_3.png", { 220, 205 }, { 70, 200 });
 
-    auto      font = FontManager::loadFont("fonts/LiberationSans-Bold.ttf", 24);
-    TextField textField("Hello World", { 150, 50 }, { 100, 100 }, { 255, 255, 255, 255 }, font.get());
-    TextField textField2("Test SDL", { 300, 300 }, { 100, 100 }, { 255, 0, 0, 255 }, font.get());
+    FontManager font("fonts/LiberationSans-Bold.ttf", 24);
+    font.init();
+
+    TextField textField("Hello World", { 150, 50 }, { 100, 100 }, { 255, 255, 255, 255 }, font.getFont());
+    TextField textField2("Test SDL", { 300, 300 }, { 100, 100 }, { 255, 0, 0, 255 }, font.getFont());
 
 
     // Add other children
@@ -367,10 +371,11 @@ void loadImages(Container& container, Renderer& renderer)
 void test(Renderer& renderer)
 {
     TextField*                textField = nullptr;
-    std::shared_ptr<TTF_Font> font;
 
-    font      = FontManager::loadFont("fonts/LiberationSans-Bold.ttf", 24);
-    textField = new TextField("Test Text", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.get());
+    FontManager font("fonts/LiberationSans-Bold.ttf", 24);
+    font.init();
+
+    textField = new TextField("Test Text", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.getFont());
     textField->setRenderer(renderer.getRenderer());
     textField->createTexture();
 
@@ -400,12 +405,14 @@ void test(Renderer& renderer)
 void widgetTest(Container& container, Renderer& renderer)
 {
 
-    auto font = FontManager::loadFont("fonts/LiberationSans-Bold.ttf", 24);
+    FontManager font("fonts/LiberationSans-Bold.ttf", 24);
+    font.init();
+
 
     Button widgetWithColor({ 50, 50 },
                            { 200, 100 },
                            "Hello World",
-                           font.get(),
+                           font.getFont(),
                            { 255, 255, 255, 255 },
                            { 0, 0, 255, 255 });
 

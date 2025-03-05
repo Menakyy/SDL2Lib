@@ -37,8 +37,8 @@ add_executable(${PROJECT_NAME}
     "testAppMain.cpp"
     # "ImageTests.cpp"
     # "RectangleTests.cpp"
-    # "EventHandlerTests.cpp"
-    "TextFieldTests.cpp"
+    "EventHandlerTests.cpp"
+    # "TextFieldTests.cpp"
     ${SRC_FILES}
 )
 
@@ -48,6 +48,7 @@ if(CODE_COVERAGE)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "CppUTest" ${SDL2_LIBRARIES} "SDL2_ttf" "SDL2_image")
+
 set(CPPUTEST_ARGS "-o" "junit" "-v")
 
 add_test(
@@ -61,13 +62,16 @@ set_tests_properties("${PROJECT_NAME}" PROPERTIES LABELS "regular")
 if(ENABLE_VALGRIND AND VALGRIND_EXECUTABLE)
     add_test(
         NAME "${PROJECT_NAME}Valgrind"
-        COMMAND valgrind
+        COMMAND ${VALGRIND_EXECUTABLE}
         --leak-check=full
         --show-leak-kinds=all
         --track-origins=yes
         --trace-children=yes
         --verbose
         --log-file=logs/valgrind.log
+        --errors-for-leak-kinds=definite
+        # --error-exitcode=1
+        --suppressions=valgrind.supp
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}"
         ${CPPUTEST_ARGS}
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
