@@ -36,9 +36,9 @@ set(SRC_FILES
 add_executable(${PROJECT_NAME}
     "testAppMain.cpp"
     # "ImageTests.cpp"
-    "RectangleTests.cpp"
+    # "RectangleTests.cpp"
     # "EventHandlerTests.cpp"
-    # "TextFieldTests.cpp"
+    "TextFieldTests.cpp"
     ${SRC_FILES}
 )
 
@@ -56,6 +56,7 @@ add_test(
     ${CPPUTEST_ARGS}
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )
+set_tests_properties("${PROJECT_NAME}" PROPERTIES LABELS "regular")
 
 if(ENABLE_VALGRIND AND VALGRIND_EXECUTABLE)
     add_test(
@@ -65,10 +66,11 @@ if(ENABLE_VALGRIND AND VALGRIND_EXECUTABLE)
         --show-leak-kinds=all
         --track-origins=yes
         --trace-children=yes
-        #--verbose
+        --verbose
         --log-file=logs/valgrind.log
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}"
         ${CPPUTEST_ARGS}
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     )
+    set_tests_properties("${PROJECT_NAME}Valgrind" PROPERTIES LABELS "valgrind")
 endif()

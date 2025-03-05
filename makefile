@@ -39,13 +39,12 @@ run:
 	./$(BUILD_DIR)/bin/$(PROJECT_NAME)
 
 run_tests:
-	@echo "\nRunning tests..."
-	./$(BUILD_DIR)/bin/GLTests -v
+	@echo "\nRunning regular tests..."
+	cd $(BUILD_DIR) && ctest -L regular --output-on-failure --verbose
 
 run_tests_valgrind:
 	@echo "\nRunning tests with valgrind..."
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --log-file=logs/valgrind.log ./$(BUILD_DIR)/bin/GLTests
-
+	cd $(BUILD_DIR) && ctest -L valgrind --output-on-failure --verbose
 rebuild_and_run: build run
 
 rebuild_and_tests: build run_tests run_tests_valgrind
