@@ -20,7 +20,7 @@ TEST_GROUP(TextFieldTest)
         sdlSystem = new SDLSystem(SDL_INIT_VIDEO);
         window    = new Window("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
         renderer  = new Renderer(window->getWindow(), -1, SDL_RENDERER_ACCELERATED);
-        font = new FontManager("fonts/LiberationSans-Bold.ttf", 24);
+        font      = new FontManager("fonts/LiberationSans-Bold.ttf", 24);
         font->init();
         textField = new TextField("Test Text", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font->getFont());
         textField->setRenderer(renderer->getRenderer());

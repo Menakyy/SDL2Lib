@@ -1,5 +1,7 @@
 #include "Window.h"
+
 #include "Logger.h"
+
 #include <iostream>
 
 Window::Window(const std::string& title, int position_x, int position_y, int width, int height, Uint32 flags)
