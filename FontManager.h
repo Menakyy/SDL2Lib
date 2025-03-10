@@ -12,8 +12,6 @@ public:
     FontManager(const std::string& fontPath, int fontSize);
     ~FontManager();
 
-    void init();
-
     TTF_Font* getFont() const { return font; }
 
 private:

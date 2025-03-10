@@ -32,17 +32,17 @@ void SoundManager::cleanup()
     Mix_CloseAudio();
 }
 
-bool SoundManager::loadSound(const std::string& id, const std::string& filename)
+void SoundManager::loadSound(const std::string& id, const std::string& filename)
 {
     Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
     if (sound == nullptr)
     {
         Logger::error(
             ("Failed to load sound: " + filename + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
-        return false;
+
+        std::abort();
     }
     sounds[id] = sound;
-    return true;
 }
 
 void SoundManager::playSound(const std::string& id)
@@ -64,4 +64,42 @@ void SoundManager::playMusic(const std::string& filename)
         return;
     }
     Mix_PlayMusic(music, -1);
+}
+
+bool SoundManager::isSoundPlaying(const std::string& id)
+{
+    auto it = sounds.find(id);
+    if (it == sounds.end())
+    {
+        Logger::error(("Sound not found: " + id).c_str());
+        return false;
+    }
+
+    for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
+    {
+        if (Mix_GetChunk(channel) == it->second && Mix_Playing(channel))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void SoundManager::stopSound(const std::string& id)
+{
+    auto it = sounds.find(id);
+    if (it == sounds.end())
+    {
+        Logger::error(("Sound not found: " + id).c_str());
+        return;
+    }
+
+    for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
+    {
+        if (Mix_GetChunk(channel) == it->second)
+        {
+            Mix_HaltChannel(channel);
+        }
+    }
 }

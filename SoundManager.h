@@ -15,9 +15,11 @@ public:
     static bool init();
     static void cleanup();
 
-    static bool loadSound(const std::string& id, const std::string& filename);
+    static void loadSound(const std::string& id, const std::string& filename);
     static void playSound(const std::string& id);
     static void playMusic(const std::string& filename);
+    static void stopSound(const std::string& id);
+    static bool isSoundPlaying(const std::string& id);
 
 private:
     static std::unordered_map<std::string, Mix_Chunk*> sounds;
