@@ -53,7 +53,7 @@
                 "${workspaceFolder}/build/bin/GLTests",
                 "-o",
                 "junit",
-                "-v"
+                "--verbose"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/build"
@@ -67,29 +67,14 @@
         },
         {
             "type": "shell",
-            "label": "CMake: run tests with Valgrind",
-            "command": "valgrind",
-            "args": [
-                "--leak-check=full",
-                "--show-leak-kinds=all",
-                "--track-origins=yes",
-                "--trace-children=yes",
-                // "--verbose",
-                "--log-file=logs/valgrind.log",
-                "${workspaceFolder}/build/bin/GLTests",
-                "-o",
-                "junit",
-                "-v"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            },
+            "label": "Run application",
+            "command": "${workspaceFolder}/build/bin/SDL_Project",
             "problemMatcher": [],
             "group": {
                 "kind": "test",
-                "isDefault": false
+                "isDefault": true
             },
-            "detail": "CMake run tests with Valgrind task"
+            "detail": "Run application task"
         }
     ]
 }
