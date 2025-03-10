@@ -35,10 +35,10 @@ set(SRC_FILES
 )
 add_executable(${PROJECT_NAME}
     "testAppMain.cpp"
-    # "ImageTests.cpp"
-    # "RectangleTests.cpp"
+    "ImageTests.cpp"
+    "RectangleTests.cpp"
     "EventHandlerTests.cpp"
-    # "TextFieldTests.cpp"
+    "TextFieldTests.cpp"
     ${SRC_FILES}
 )
 
@@ -72,6 +72,7 @@ if(ENABLE_VALGRIND AND VALGRIND_EXECUTABLE)
         --errors-for-leak-kinds=definite
         # --error-exitcode=1
         --suppressions=valgrind.supp
+        # --gen-suppressions=all
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}"
         ${CPPUTEST_ARGS}
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
