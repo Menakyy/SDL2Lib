@@ -10,11 +10,11 @@
 #include "Rectangle.h"
 #include "Renderer.h"
 #include "SDLSystem.h"
+#include "SoundManager.h"
 #include "TextField.h"
 #include "TextInput.h"
 #include "Utilities.h"
 #include "Window.h"
-#include "SoundManager.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -370,7 +370,7 @@ void loadImages(Container& container, Renderer& renderer)
 
 void test(Renderer& renderer)
 {
-    TextField*                textField = nullptr;
+    TextField* textField = nullptr;
 
     FontManager font("fonts/LiberationSans-Bold.ttf", 24);
     font.init();
@@ -455,7 +455,7 @@ void soundTest()
 
     bool status = SoundManager::loadSound("guitar", "sounds/guitar.mp3");
 
-    if(not status)
+    if (not status)
     {
         Logger::error("Failed to load sound");
         return;
@@ -465,6 +465,5 @@ void soundTest()
 
     SDL_Delay(5000);
 }
-
 
 // NOLINTEND

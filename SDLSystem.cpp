@@ -1,4 +1,5 @@
 #include "SDLSystem.h"
+
 #include "Logger.h"
 
 SDLSystem::SDLSystem(Uint32 sdlInitFlags) : sdlInitFlags(sdlInitFlags)

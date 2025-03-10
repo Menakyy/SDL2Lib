@@ -37,8 +37,8 @@ bool SoundManager::loadSound(const std::string& id, const std::string& filename)
     Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
     if (sound == nullptr)
     {
-        Logger::error(("Failed to load sound: " + filename
-                                  + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
+        Logger::error(
+            ("Failed to load sound: " + filename + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
         return false;
     }
     sounds[id] = sound;
@@ -59,8 +59,8 @@ void SoundManager::playMusic(const std::string& filename)
     music = Mix_LoadMUS(filename.c_str());
     if (music == nullptr)
     {
-        Logger::error(("Failed to load music: " + filename
-                                  + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
+        Logger::error(
+            ("Failed to load music: " + filename + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
         return;
     }
     Mix_PlayMusic(music, -1);
