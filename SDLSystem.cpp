@@ -1,17 +1,16 @@
 #include "SDLSystem.h"
-
-#include <iostream>
+#include "Logger.h"
 
 SDLSystem::SDLSystem(Uint32 sdlInitFlags) : sdlInitFlags(sdlInitFlags)
 {
     if (SDL_Init(sdlInitFlags) != 0)
     {
-        throw std::runtime_error("SDL_Init Error: " + std::string(SDL_GetError()));
+        Logger::error(("SDL_Init Error: " + std::string(SDL_GetError())).c_str());
     }
 
     if (TTF_Init() == -1)
     {
-        throw std::runtime_error("TTF_Init Error: " + std::string(TTF_GetError()));
+        Logger::error(("TTF_Init Error: " + std::string(TTF_GetError())).c_str());
     }
 }
 
