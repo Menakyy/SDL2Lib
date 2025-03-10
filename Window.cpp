@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include "Logger.h"
 #include <iostream>
 
 Window::Window(const std::string& title, int position_x, int position_y, int width, int height, Uint32 flags)
@@ -8,7 +8,7 @@ Window::Window(const std::string& title, int position_x, int position_y, int wid
 
     if (window == nullptr)
     {
-        throw std::runtime_error("Failed to create window: " + std::string(SDL_GetError()));
+        Logger::error(("Failed to create window: " + std::string(SDL_GetError())).c_str());
     }
 }
 
