@@ -4,10 +4,6 @@
 
 FontManager::FontManager(const std::string& fontPath, int fontSize) : fontPath(fontPath), fontSize(fontSize)
 {
-}
-
-void FontManager::init()
-{
     font = TTF_OpenFont(fontPath.c_str(), fontSize);
     if (font == nullptr)
     {
