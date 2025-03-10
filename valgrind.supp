@@ -1,27 +1,18 @@
 {
-    ignore_sdl
-    Memcheck:Leak
-    match-leak-kinds: reachable
-    fun:SDL_Init
-    fun:SDL_CreateRenderer
-    fun:SDL_CreateTexture
-    fun:SDL_CreateWindow
-    fun:SDL_PollEvent
-    fun:TTF_Init
-    fun:TTF_OpenFont
-    fun:hb_shape_full
-    fun:_XlcCreateLC
-    fun:_XOpenLC
-    fun:_XrmInitParseInfo
-    fun:_XlcDefaultLoader
-    fun:XrmGetStringDatabase
-    fun:XSetLocaleModifiers
-    fun:_XimOpenIM
+    Memcheck:Addr8
+    fun:strncmp
+    fun:is_dst
+    fun:_dl_dst_count
+    fun:expand_dynamic_string_token
+    fun:fillin_rpath.isra.0
     fun:decompose_rpath
     fun:cache_rpath
-    obj:/usr/lib/x86_64-linux-gnu/libSDL2_ttf-2.0.so.*
-    obj:/usr/lib/x86_64-linux-gnu/libharfbuzz.so.*
-    obj:/usr/lib/x86_64-linux-gnu/libX11.so.*
-    obj:/usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.*
-    obj:/usr/lib/x86_64-linux-gnu/libLLVM-*.so.*
+    fun:cache_rpath
+    fun:_dl_map_object
+    fun:openaux
+    fun:_dl_catch_exception
+    fun:_dl_map_object_deps
+    fun:dl_open_worker_begin
+    fun:_dl_catch_exception
+    fun:dl_open_worker
 }
