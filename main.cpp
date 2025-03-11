@@ -30,8 +30,9 @@ int main()
 {
     Logger::initialize("logs/log.txt", Logger::LogLevel::info);
 
-    SDLSystem sdl(SDL_INIT_VIDEO);
-    Window    window("SDL2",
+    SDLSystem sdl(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf | SDLSystem::audio));
+
+    Window window("SDL2",
                   SDL_WINDOWPOS_CENTERED,
                   SDL_WINDOWPOS_CENTERED,
                   DEFAULT_SCREEN_WIDTH,
@@ -45,12 +46,19 @@ int main()
     container.setRenderer(renderer.getRenderer());
 
     FontManager font("fonts/LiberationSans-Bold.ttf", 24);
-    TextField   textField("Rock game",
-                        { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2,
-                            (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) },
-                        { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
-                        { 255, 255, 255, 255 },
-                        font.getFont());
+    TextField   textField(
+        "Rock game",
+        { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2, (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) },
+        { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
+        { 255, 255, 255, 255 },
+        font.getFont());
+
+    TextField exitField(
+        "Exit",
+        { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2, (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) },
+        { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
+        { 255, 255, 255, 255 },
+        font.getFont());
 
     Button button(
         { (DEFAULT_SCREEN_WIDTH - 200) / 2, (DEFAULT_SCREEN_HEIGHT - 250) / 2 + textField.getSize().getHeight() + 10 },
@@ -60,27 +68,29 @@ int main()
         { 255, 255, 255, 255 },
         { 0, 0, 255, 255 });
 
-    SoundManager::init();
-    SoundManager::loadSound("guitar", "sounds/guitar.mp3");
+    SoundManager guitarSound;
+    guitarSound.loadSound("guitar", "sounds/guitar.mp3");
 
+    SoundManager click;
+    click.loadSound("click", "sounds/click.mp3");
     container.addChild(&textField);
 
     textField.createTexture();
 
     EventHandler eventHandler;
-    bool         exit = false;
-    int value = 250;
+    bool         exit  = false;
+    int          value = 250;
 
-    SoundManager::playSound("sounds/guitar.mp3");
+    guitarSound.playSound("guitar");
     while (not exit)
     {
-        if (eventHandler.isQuit() || (value < -250 ))
+        if (eventHandler.isQuit() || (value < -250))
         {
             exit = true;
         }
 
         textField.setPosition({ (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2,
-                                (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) + value});
+                                (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) + value });
         value -= 4;
 
         renderer.applyRenderDrawColor();
@@ -105,6 +115,11 @@ int main()
             if (button.isWidgetClicked(eventHandler))
             {
                 Logger::info("Button clicked");
+                click.playSound("click");
+                container.clear();
+                container.addChild(&exitField);
+                exitField.createTexture();
+                exit = true;
             }
         }
 
@@ -115,6 +130,8 @@ int main()
         SDL_Delay(16);
     }
 
+
+    SDL_Delay(500);
     return 0;
 }
 
