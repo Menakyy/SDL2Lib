@@ -47,8 +47,10 @@ int main()
 {
     Logger::initialize("logs/log.txt", Logger::LogLevel::info);
 
-    SDLSystem sdl(SDL_INIT_VIDEO);
-    Window    window("SDL2",
+    SDLSystem::AudioParameters audioParameters = { 44100, MIX_DEFAULT_FORMAT, 2, 2048 };
+    SDLSystem                  sdl(SDL_INIT_VIDEO, audioParameters);
+
+    Window window("SDL2",
                   SDL_WINDOWPOS_CENTERED,
                   SDL_WINDOWPOS_CENTERED,
                   DEFAULT_SCREEN_WIDTH,
@@ -77,7 +79,6 @@ int main()
 void enterText(Container& container, Renderer& renderer)
 {
     FontManager font("fonts/LiberationSans-Bold.ttf", 24);
-    font.init();
 
     TextField promptText("Wpisz: test", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.getFont());
     TextInput textInput({ 50, 150 }, { 50, 100 }, font.getFont(), { 255, 255, 255, 255 });
@@ -208,7 +209,6 @@ void loopPresentation(Container& container, Renderer& renderer)
     Image image("pngs/Person_3.png", { 220, 205 }, { 70, 200 });
 
     FontManager font("fonts/LiberationSans-Bold.ttf", 24);
-    font.init();
 
     TextField textField("Hello World", { 150, 50 }, { 100, 100 }, { 255, 255, 255, 255 }, font.getFont());
     TextField textField2("Test SDL", { 300, 300 }, { 100, 100 }, { 255, 0, 0, 255 }, font.getFont());
@@ -373,7 +373,6 @@ void test(Renderer& renderer)
     TextField* textField = nullptr;
 
     FontManager font("fonts/LiberationSans-Bold.ttf", 24);
-    font.init();
 
     textField = new TextField("Test Text", { 50, 50 }, { 300, 50 }, { 255, 255, 255, 255 }, font.getFont());
     textField->setRenderer(renderer.getRenderer());
@@ -406,7 +405,6 @@ void widgetTest(Container& container, Renderer& renderer)
 {
 
     FontManager font("fonts/LiberationSans-Bold.ttf", 24);
-    font.init();
 
 
     Button widgetWithColor({ 50, 50 },
@@ -451,17 +449,11 @@ void widgetTest(Container& container, Renderer& renderer)
 
 void soundTest()
 {
-    SoundManager::init();
+    SoundManager soundManager;
 
-    bool status = SoundManager::loadSound("guitar", "sounds/guitar.mp3");
+    soundManager.loadSound("guitar", "sounds/guitar.mp3");
 
-    if (not status)
-    {
-        Logger::error("Failed to load sound");
-        return;
-    }
-
-    SoundManager::playSound("guitar");
+    soundManager.playSound("guitar");
 
     SDL_Delay(5000);
 }
