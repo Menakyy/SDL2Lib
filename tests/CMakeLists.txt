@@ -47,7 +47,7 @@ if(CODE_COVERAGE)
     target_link_options(${PROJECT_NAME} PUBLIC --coverage)
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE "CppUTest" ${SDL2_LIBRARIES} "SDL2_ttf" "SDL2_image")
+target_link_libraries(${PROJECT_NAME} PRIVATE "CppUTest" ${SDL2_LIBRARIES} "SDL2_ttf" "SDL2_image" "SDL2_mixer")
 
 set(CPPUTEST_ARGS "-o" "junit" "-v")
 
