@@ -2,17 +2,13 @@
 
 #include "Logger.h"
 
-std::unordered_map<std::string, Mix_Chunk*> SoundManager::sounds;
-Mix_Music*                                  SoundManager::music = nullptr;
-
-bool SoundManager::init()
+SoundManager::SoundManager() : music(nullptr)
 {
-    if (Mix_OpenAudio(kDefaultFrequency, MIX_DEFAULT_FORMAT, kDefaultChannels, kChunkSize) < 0)
-    {
-        Logger::error(("SDL_mixer could not initialize! SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
-        return false;
-    }
-    return true;
+}
+
+SoundManager::~SoundManager()
+{
+    cleanup();
 }
 
 void SoundManager::cleanup()
@@ -32,21 +28,30 @@ void SoundManager::cleanup()
     Mix_CloseAudio();
 }
 
-void SoundManager::loadSound(const std::string& id, const std::string& filename)
+bool SoundManager::loadSound(const std::string& id, const std::string& filename)
 {
     Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
     if (sound == nullptr)
     {
         Logger::error(
             ("Failed to load sound: " + filename + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
-
-        std::abort();
+        return false;
     }
+    Logger::info(("Sound loaded: " + filename).c_str());
     sounds[id] = sound;
+    return true;
 }
 
 void SoundManager::playSound(const std::string& id)
 {
+    auto it = sounds.find(id);
+    if (it == sounds.end())
+    {
+        Logger::error(("Sound not found: " + id).c_str());
+        return;
+    }
+
+    Logger::info(("Playing sound: " + id).c_str());
     Mix_PlayChannel(-1, sounds[id], 0);
 }
 
@@ -63,6 +68,7 @@ void SoundManager::playMusic(const std::string& filename)
             ("Failed to load music: " + filename + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
         return;
     }
+    Logger::info(("Playing music: " + filename).c_str());
     Mix_PlayMusic(music, -1);
 }
 
@@ -77,7 +83,8 @@ bool SoundManager::isSoundPlaying(const std::string& id)
 
     for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
     {
-        if (Mix_GetChunk(channel) == it->second && Mix_Playing(channel))
+        bool status = Mix_Playing(channel) >= 0;
+        if (Mix_GetChunk(channel) == it->second && status)
         {
             return true;
         }
@@ -102,4 +109,9 @@ void SoundManager::stopSound(const std::string& id)
             Mix_HaltChannel(channel);
         }
     }
+}
+
+bool SoundManager::isMusicPlaying()
+{
+    return Mix_PlayingMusic() == 1;
 }

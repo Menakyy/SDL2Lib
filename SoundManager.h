@@ -8,22 +8,21 @@
 class SoundManager
 {
 public:
-    static constexpr int kDefaultFrequency = 44100;
-    static constexpr int kChunkSize        = 2048;
-    static constexpr int kDefaultChannels  = 2;
+    SoundManager();
+    ~SoundManager();
 
-    static bool init();
-    static void cleanup();
+    void cleanup();
 
-    static void loadSound(const std::string& id, const std::string& filename);
-    static void playSound(const std::string& id);
-    static void playMusic(const std::string& filename);
-    static void stopSound(const std::string& id);
-    static bool isSoundPlaying(const std::string& id);
+    bool loadSound(const std::string& id, const std::string& filename);
+    void playSound(const std::string& id);
+    void playMusic(const std::string& filename);
+    bool isSoundPlaying(const std::string& id);
+    void stopSound(const std::string& id);
+    bool isMusicPlaying();
 
 private:
-    static std::unordered_map<std::string, Mix_Chunk*> sounds;
-    static Mix_Music*                                  music;
+    std::unordered_map<std::string, Mix_Chunk*> sounds;
+    Mix_Music*                                  music;
 };
 
 #endif  // SOUNDMANAGER_H
