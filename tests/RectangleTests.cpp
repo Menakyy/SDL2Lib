@@ -14,7 +14,7 @@ TEST_GROUP(RectangleTest)
 
     void setup()
     {
-        sdlSystem = new SDLSystem(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf | SDLSystem::audio));
+        sdlSystem = new SDLSystem(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf));
         window    = new Window("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
         renderer  = new Renderer(window->getWindow(), -1, SDL_RENDERER_ACCELERATED);
         rectangle = new Rectangle({ 0, 0 }, { 50, 50 }, { 255, 255, 255, 255 }, false);
