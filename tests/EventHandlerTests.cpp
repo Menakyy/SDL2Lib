@@ -12,7 +12,7 @@ TEST_GROUP(EventHandlerTest)
 
     void setup()
     {
-        sdlSystem    = new SDLSystem(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf | SDLSystem::audio));
+        sdlSystem    = new SDLSystem(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf));
         eventHandler = new EventHandler();
     }
 
