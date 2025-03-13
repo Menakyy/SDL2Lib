@@ -13,6 +13,7 @@ SDL_Color convertColorToSDLColor(const Color& color);
 SDL_Rect  convertToSDLRect(const Point& position, const Size& size);
 bool      isPointInsideRect(const Point& point, const SDL_Rect& rect);
 Point     getMousePosition(const SDL_Event& event);
+void      wait(int milliseconds);
 }  // namespace Utilities
 
 #endif /* UTILITIES */

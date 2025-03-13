@@ -28,4 +28,9 @@ Point getMousePosition(const SDL_Event& event)
     return Point(event.motion.x, event.motion.y);
 }
 
+void wait(int milliseconds)
+{
+    SDL_Delay(milliseconds);
+}
+
 }  // namespace Utilities
