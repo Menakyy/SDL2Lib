@@ -35,8 +35,7 @@ include_directories("lib/" "./")
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME}
-    "main.cpp"
+add_library(SDL_Lib STATIC
     "SDLSystem.cpp"
     "Window.cpp"
     "Renderer.cpp"
@@ -58,7 +57,11 @@ add_executable(${PROJECT_NAME}
     "Utilities.cpp"
     "Button.cpp"
     "AbstractCallback.cpp"
-    "SoundManager.cpp")
+    "SoundManager.cpp"
+)
+
+add_executable(${PROJECT_NAME}  "main.cpp")
+target_link_libraries(${PROJECT_NAME}  SDL_Lib)
 
 if(CODE_COVERAGE)
     target_compile_options(${PROJECT_NAME} PUBLIC --coverage)
