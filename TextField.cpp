@@ -73,6 +73,11 @@ std::string TextField::getText() const
 
 void TextField::render()
 {
+    if(not visible)
+    {
+        return;
+    }
+
     if (textTexture != nullptr)
     {
         SDL_Rect destRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };

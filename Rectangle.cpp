@@ -10,6 +10,11 @@ Rectangle::Rectangle(const Point& position, const Size& size, const Color& color
 
 void Rectangle::render()
 {
+    if(not visible)
+    {
+        return;
+    }
+
     if (fill)
     {
         renderFilled();

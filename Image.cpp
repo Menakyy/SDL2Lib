@@ -20,9 +20,9 @@ Image::~Image()
     }
 }
 
-void Image::tryLoadImage(const std::string& filePath)
+void Image::tryLoadImage(/* const std::string& filePath */)
 {
-    SDL_Surface* surfacetmp = IMG_Load(filePath.c_str());
+    SDL_Surface* surfacetmp = IMG_Load(imageFilePath.c_str());
     if (surfacetmp == nullptr)
     {
         Logger::error(("Failed to load image: " + std::string(IMG_GetError())).c_str());
@@ -37,7 +37,7 @@ void Image::tryLoadImage(const std::string& filePath)
     }
     else
     {
-        Logger::info(("Image loaded successfully: " + filePath).c_str());
+        Logger::info(("Image loaded successfully: " + imageFilePath).c_str());
     }
 
     ImageSrcRect = { 0, 0, surfacetmp->w, surfacetmp->h };
@@ -56,6 +56,11 @@ std::string Image::getImageFilePath() const
 
 void Image::render()
 {
+    if(not visible)
+    {
+        return;
+    }
+
     if (texture != nullptr)
     {
         ImageDestRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };

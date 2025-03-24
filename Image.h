@@ -16,7 +16,7 @@ public:
     void render() override;
     void setRenderer(SDL_Renderer* renderer) override;
 
-    void        tryLoadImage(const std::string& filePath);
+    void        tryLoadImage(/* const std::string& filePath */);
     void        setImageFilePath(const std::string& filePath);
     std::string getImageFilePath() const;
 

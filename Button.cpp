@@ -37,6 +37,11 @@ SDL_Rect Button::getRect() const
 
 void Button::render()
 {
+    if(not visible)
+    {
+        return;
+    }
+
     if (backGround != nullptr)
     {
         backGround->render();
