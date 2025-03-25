@@ -33,13 +33,13 @@ TEST_GROUP(ImageTest)
 
 TEST(ImageTest, LoadImage)
 {
-    image->tryLoadImage("tests/images/Person_3.png");
+    image->tryLoadImage();
     CHECK_TRUE(image->getTexture() != nullptr);
 }
 
 TEST(ImageTest, RenderImage)
 {
-    image->tryLoadImage("tests/images/Person_3.png");
+    image->tryLoadImage();
     image->render();
 }
 
