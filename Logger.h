@@ -12,6 +12,13 @@
 class Logger
 {
 public:
+
+    enum class FileMode
+    {
+        append,
+        overwrite,
+    };
+
     enum class LogLevel
     {
         none,
@@ -22,7 +29,7 @@ public:
         fatalError,
     };
 
-    static void initialize(const std::string& logFileName, LogLevel logLevel = LogLevel::error);
+    static void initialize(const std::string& logFileName, LogLevel logLevel = LogLevel::error, FileMode fileMode = FileMode::append);
     static void shutdown();
 
     static void     info(const char* format, ...);
@@ -34,6 +41,7 @@ public:
 
 private:
     static LogLevel       globalLogLevel;
+    static FileMode       fileMode;
     static std::ofstream  logFile;
     static std::string    logFileName;
     static const uint16_t MAX_BUFFER_LENGTH = 256;
