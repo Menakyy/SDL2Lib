@@ -33,4 +33,11 @@ void wait(int milliseconds)
     SDL_Delay(milliseconds);
 }
 
+bool hasIntersection(Point point1, Size size1, Point point2, Size size2)
+{
+    SDL_Rect rect1 = Utilities::convertToSDLRect(point1, size1);
+    SDL_Rect rect2 = Utilities::convertToSDLRect(point2, size2);
+    return SDL_HasIntersection(&rect1, &rect2);
+}
+
 }  // namespace Utilities
