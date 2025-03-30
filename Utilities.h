@@ -63,6 +63,16 @@ void wait(int milliseconds);
  * @return false If the rectangles do not intersect.
  */
 bool hasIntersection(Point point1, Size size1, Point point2, Size size2);
+
+/**
+ * @brief Checks if two SDL_Rect objects intersect.
+ *
+ * @param rect1 The first SDL_Rect object.
+ * @param rect2 The second SDL_Rect object.
+ * @return true If the rectangles intersect.
+ * @return false If the rectangles do not intersect.
+ */
+bool hasIntersection(const SDL_Rect& rect1, const SDL_Rect& rect2);
 }  // namespace Utilities
 
 #endif /* UTILITIES */

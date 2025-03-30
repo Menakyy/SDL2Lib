@@ -40,4 +40,9 @@ bool hasIntersection(Point point1, Size size1, Point point2, Size size2)
     return SDL_HasIntersection(&rect1, &rect2);
 }
 
+bool hasIntersection(const SDL_Rect& rect1, const SDL_Rect& rect2)
+{
+    return SDL_HasIntersection(&rect1, &rect2);
+}
+
 }  // namespace Utilities
