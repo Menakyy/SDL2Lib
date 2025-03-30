@@ -71,6 +71,12 @@ std::string TextField::getText() const
     return text;
 }
 
+void TextField::setTextAndCreateTexture(const std::string& text)
+{
+    this->text = text;
+    createTexture();
+}
+
 void TextField::render()
 {
     if(not visible)
