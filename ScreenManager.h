@@ -7,6 +7,7 @@
 #include "Renderer.h"
 
 #include <SDL2/SDL.h>
+#include <functional>
 #include <memory>
 #include <unordered_map>
 
@@ -18,19 +19,20 @@ public:
     ScreenManager(Container& container, Renderer& renderer, EventHandler& eventHandler);
     ~ScreenManager();
 
-    void addScreen(const int id, std::unique_ptr<Screen> screen);
-    void setActiveScreen(const int id);
-    void update();
-    void render();
-    void handleEvents(bool& exit);
+    void    addScreen(const int id, std::function<std::unique_ptr<Screen>()> screenFactory);
+    Screen* getActiveScreen() const;
+    void    setActiveScreen(const int id);
+    void    update();
+    void    render();
+    void    handleEvents(bool& exit);
 
 private:
-    Container&                                       container;
-    Renderer&                                        renderer;
-    EventHandler&                                    eventHandler;
-    std::unordered_map<int, std::unique_ptr<Screen>> screens;
+    Container&    container;
+    Renderer&     renderer;
+    EventHandler& eventHandler;
 
-    Screen* activeScreen;
+    std::unordered_map<int, std::function<std::unique_ptr<Screen>()>> screenFactories;
+    Screen*                                                           activeScreen;
 };
 
 

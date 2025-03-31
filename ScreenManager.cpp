@@ -14,26 +14,32 @@ ScreenManager::ScreenManager(Container& container, Renderer& renderer, EventHand
 ScreenManager::~ScreenManager()
 {
     container.clear();
+    delete activeScreen;
 }
 
-void ScreenManager::addScreen(const int id, std::unique_ptr<Screen> screen)
+void ScreenManager::addScreen(const int id, std::function<std::unique_ptr<Screen>()> screenFactory)
 {
-    if (screen == nullptr)
+    if (!screenFactory)
     {
-        Logger::error("Screen is nullptr");
+        Logger::error("Screen factory is nullptr");
         std::abort();
     }
 
-    screens[id] = std::move(screen);
+    screenFactories[id] = std::move(screenFactory);
+}
+
+Screen* ScreenManager::getActiveScreen() const
+{
+    return activeScreen;
 }
 
 void ScreenManager::setActiveScreen(const int id)
 {
-    auto it = screens.find(id);
-    if (it != screens.end())
+    auto it = screenFactories.find(id);
+    if (it != screenFactories.end())
     {
         container.clear();
-        activeScreen = it->second.get();
+        activeScreen = it->second().release();
         activeScreen->init();
     }
     else
