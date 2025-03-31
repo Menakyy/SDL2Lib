@@ -112,7 +112,9 @@ int main()
                 exit = true;
             }
 
-            if (button.isWidgetClicked(eventHandler))
+            button.handleEvents(eventHandler);
+
+            if (button.getClicked())
             {
                 Logger::info("Button clicked");
                 click.playSound("click");
