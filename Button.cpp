@@ -15,19 +15,21 @@ Button::Button(const Point&       position,
 {
 }
 
-bool Button::isWidgetClicked(EventHandler& eventHandler)
+void Button::handleEvents(EventHandler& eventHandler)
 {
     Point    mousePos   = Utilities::getMousePosition(eventHandler.getEvent());
     SDL_Rect widgetRect = Utilities::convertToSDLRect(position, size);
 
-    bool status = eventHandler.isMouseButtonDown() && Utilities::isPointInsideRect(mousePos, widgetRect);
+    hovered = Utilities::isPointInsideRect(mousePos, widgetRect);
 
-    if (status && clickCallback != nullptr)
+    if (eventHandler.isMouseButtonDown() && hovered)
     {
-        clickCallback->run(this);
+        if (clickCallback != nullptr)
+        {
+            clickCallback->run(this);
+        }
+        isClicked = true;
     }
-
-    return status;
 }
 
 SDL_Rect Button::getRect() const
@@ -37,15 +39,29 @@ SDL_Rect Button::getRect() const
 
 void Button::render()
 {
-    if(not visible)
+    if (!visible)
     {
         return;
     }
+
+    SDL_Rect widgetRect = Utilities::convertToSDLRect(position, size);
 
     if (backGround != nullptr)
     {
         backGround->render();
     }
+
+    if (hovered)
+    {
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+        for (int i = 0; i < kBorderThickness; ++i)
+        {
+            SDL_Rect borderRect = { widgetRect.x - i, widgetRect.y - i, widgetRect.w + 2 * i, widgetRect.h + 2 * i };
+            SDL_RenderDrawRect(renderer, &borderRect);
+        }
+    }
+
     textField.render();
 }
 
