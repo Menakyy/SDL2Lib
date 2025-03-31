@@ -59,6 +59,7 @@ add_library(SDL_Lib STATIC
     "AbstractCallback.cpp"
     "SoundManager.cpp"
     "ScreenManager.cpp"
+    "Slider.cpp"
 )
 
 add_executable(${PROJECT_NAME}  "main.cpp")
