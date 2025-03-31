@@ -27,7 +27,7 @@ public:
 
     void setClickCallback(AbstractCallback* callback);
 
-    void     handleEvents(EventHandler& eventHandler);
+    void     handleEvents(EventHandler& eventHandler) override;
     SDL_Rect getRect() const;
 
     bool getClicked() const { return isClicked; }
