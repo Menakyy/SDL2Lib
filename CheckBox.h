@@ -5,6 +5,7 @@
 #include "Widget.h"
 
 #include <SDL2/SDL.h>
+#include <memory>
 #include <string>
 
 class CheckBox : public Widget
@@ -18,8 +19,13 @@ public:
 
     void handleEvents(EventHandler& eventHandler) override;
 
+    bool getChecked() const;
+
 private:
-    Rectangle* checkBox = nullptr;
+    std::unique_ptr<Rectangle> checkBox;
+
+    bool hovered = false;
+    bool checked = false;
 };
 
 
