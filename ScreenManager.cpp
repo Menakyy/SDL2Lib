@@ -40,11 +40,11 @@ void ScreenManager::setActiveScreen(const int id)
     {
         container.clear();
 
-        if (activeScreen != nullptr)
-        {
-            delete activeScreen;
-            activeScreen = nullptr;
-        }
+        // if (activeScreen != nullptr)
+        // {
+        //     delete activeScreen;
+        //     activeScreen = nullptr;
+        // }
 
         activeScreen = it->second().release();
         activeScreen->init();
