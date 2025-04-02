@@ -3,8 +3,9 @@
 #include "Logger.h"
 #include "Utilities.h"
 
-Rectangle::Rectangle(const Point& position, const Size& size, const Color& color, bool fill)
-    : ShapeView(position, size, color, fill)
+Rectangle::Rectangle(const Point& position, const Size& size, const Color& color, bool fill, int thickness)
+    : ShapeView(position, size, color, fill),
+      borderThickness(thickness)
 {
 }
 
@@ -31,10 +32,6 @@ void Rectangle::renderFilled() const
     {
         SDL_SetRenderDrawColor(renderer, color.getR(), color.getG(), color.getB(), color.getA());
         SDL_Rect rect = Utilities::convertToSDLRect(position, size);
-        // Logger::getInstance().log("Rendering filled rectangle at position: " + std::to_string(position.getX()) + ", "
-        //                           + std::to_string(position.getY()) + " with size: " +
-        //                           std::to_string(size.getWidth())
-        //                           + ", " + std::to_string(size.getHeight()));
         SDL_RenderFillRect(renderer, &rect);
     }
 }
@@ -45,18 +42,39 @@ void Rectangle::renderOutline() const
     {
         SDL_SetRenderDrawColor(renderer, color.getR(), color.getG(), color.getB(), color.getA());
         SDL_Rect rect = Utilities::convertToSDLRect(position, size);
-        // Logger::getInstance().log("Rendering outline rectangle at position: " + std::to_string(position.getX()) + ",
-        // "
-        //                           + std::to_string(position.getY()) + " with size: " +
-        //                           std::to_string(size.getWidth())
-        //                           + ", " + std::to_string(size.getHeight()));
-        SDL_RenderDrawRect(renderer, &rect);
+        if (borderThickness == 1)
+        {
+            SDL_RenderDrawRect(renderer, &rect);
+        }
+        else
+        {
+            for (int i = 0; i < borderThickness; ++i)
+            {
+                SDL_Rect borderRect = { rect.x - i, rect.y - i, rect.w + 2 * i, rect.h + 2 * i };
+                SDL_RenderDrawRect(renderer, &borderRect);
+            }
+        }
     }
 }
 
 SDL_Rect Rectangle::getRect() const
 {
     return Utilities::convertToSDLRect(position, size);
+}
+
+void Rectangle::setBorderThickness(int thickness)
+{
+    if (thickness < 0)
+    {
+        Logger::error("Thickness cannot be negative");
+        return;
+    }
+    borderThickness = thickness;
+}
+
+int Rectangle::getborderThickness() const
+{
+    return borderThickness;
 }
 
 void Rectangle::setRenderer(SDL_Renderer* renderer)
