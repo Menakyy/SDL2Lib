@@ -27,8 +27,8 @@ void CheckBox::render()
     }
     if (checked)
     {
-        int   tmpX       = size.getWidth() / 5;
-        int   tmpY       = size.getHeight() / 5;
+        int   tmpX             = size.getWidth() / 5;
+        int   tmpY             = size.getHeight() / 5;
         Point internalPosition = { position.getX() + tmpX, position.getY() + tmpY };
         Size  internalSize     = { size.getWidth() - 2 * tmpX, size.getHeight() - 2 * tmpY };
 
