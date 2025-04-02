@@ -79,7 +79,7 @@ void TextField::setTextAndCreateTexture(const std::string& text)
 
 void TextField::render()
 {
-    if(not visible)
+    if (not visible)
     {
         return;
     }

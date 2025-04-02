@@ -56,7 +56,6 @@ void ScreenManager::setActiveScreen(const int id)
     }
 }
 
-
 void ScreenManager::update()
 {
     if (activeScreen != nullptr)

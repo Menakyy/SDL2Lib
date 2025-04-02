@@ -12,7 +12,6 @@
 class Logger
 {
 public:
-
     enum class FileMode
     {
         append,
@@ -29,7 +28,9 @@ public:
         fatalError,
     };
 
-    static void initialize(const std::string& logFileName, LogLevel logLevel = LogLevel::error, FileMode fileMode = FileMode::append);
+    static void initialize(const std::string& logFileName,
+                           LogLevel           logLevel = LogLevel::error,
+                           FileMode           fileMode = FileMode::append);
     static void shutdown();
 
     static void     info(const char* format, ...);

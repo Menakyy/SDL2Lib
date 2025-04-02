@@ -35,7 +35,7 @@ void TextInput::handleEvent(const SDL_Event& event)
 
 void TextInput::render()
 {
-    if(not visible)
+    if (not visible)
     {
         return;
     }

@@ -81,8 +81,8 @@ void Slider::updateThumbPosition()
     int thumbX     = track.getPosition().getX() + ((currentValue - minValue) * trackWidth) / (maxValue - minValue);
     thumb.setPosition({ thumbX, track.getPosition().getY() });
 
-    Logger::debug(("ThumbX: " + std::to_string(thumbX) + " | currentValue: " + std::to_string(currentValue) + " | minValue: "
-                   + std::to_string(minValue) + " | maxValue: " + std::to_string(maxValue))
+    Logger::debug(("ThumbX: " + std::to_string(thumbX) + " | currentValue: " + std::to_string(currentValue)
+                   + " | minValue: " + std::to_string(minValue) + " | maxValue: " + std::to_string(maxValue))
                       .c_str());
 }
 

@@ -22,9 +22,9 @@ SDLSystem::SDLSystem(Uint32 sdlInitFlags, InitOptions initOptions, AudioParamete
     }
 
     int mixInitCode = Mix_OpenAudio(audioParameters.frequency,
-                                       audioParameters.format,
-                                       audioParameters.channels,
-                                       audioParameters.chunksize);
+                                    audioParameters.format,
+                                    audioParameters.channels,
+                                    audioParameters.chunksize);
 
     if ((initOptions & audio) != 0 && mixInitCode == -1)
     {
