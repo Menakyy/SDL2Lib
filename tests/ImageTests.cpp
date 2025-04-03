@@ -18,7 +18,7 @@ TEST_GROUP(ImageTest)
         sdlSystem = new SDLSystem(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf));
         window    = new Window("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
         renderer  = new Renderer(window->getWindow(), -1, SDL_RENDERER_ACCELERATED);
-        image     = new Image("tests/images/Person_3.png", { 220, 205 }, { 70, 200 });
+        image     = new Image("tests/assets/images/Person_3.png", { 220, 205 }, { 70, 200 });
         image->setRenderer(renderer->getRenderer());
     }
 

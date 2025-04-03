@@ -45,7 +45,7 @@ int main()
     Container container;
     container.setRenderer(renderer.getRenderer());
 
-    FontManager font("fonts/LiberationSans-Bold.ttf", 24);
+    FontManager font("tests/assets/fonts/LiberationSans-Bold.ttf", 24);
     TextField   textField(
         "Rock game",
         { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2, (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) },
@@ -69,10 +69,10 @@ int main()
         { 0, 0, 255, 255 });
 
     SoundManager guitarSound;
-    guitarSound.loadSound("guitar", "sounds/guitar.mp3");
+    guitarSound.loadSound("guitar", "tests/assets/sounds/guitar.mp3");
 
     SoundManager click;
-    click.loadSound("click", "sounds/click.mp3");
+    click.loadSound("click", "tests/assets/sounds/click.mp3");
     container.addChild(&textField);
 
     textField.createTexture();
