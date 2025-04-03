@@ -9,6 +9,8 @@ A lightweight wrapper library for SDL2, designed to simplify common tasks such a
 - [🛠️ Build](#-build)
 - [💡 Usage](#-usage)
 - [📂 Project Structure](#-project-structure)
+- [✅ Commit Message Convention](#-commit-message-convention)
+- [✨ Code Formatting](#-code-formatting)
 
 ---
 
@@ -19,6 +21,7 @@ Clone the repository via HTTPS or SSH:
 ```bash
 git clone https://github.com/your-repo/SDL2Game.git
 cd SDL2Game
+git submodule update --init --recursive
 ```
 
 ### Required Packages
@@ -37,11 +40,12 @@ Make sure the following dependencies are installed on your system:
 - `libsdl2-image-dev`
 - `libsdl2-mixer-dev`
 - `lcov`
+- `python3`
 
 To install these on a Debian-based system, run:
 
 ```bash
-sudo apt-get install git cmake g++ clang valgrind clang-tidy clang-format libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev lcov
+sudo apt-get install git cmake g++ clang valgrind clang-tidy clang-format libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev lcov python3
 ```
 
 ---
@@ -129,4 +133,32 @@ SDL2Game/
 └── Readme.md             # Project documentation
 ```
 
-test
+## ✅ Commit Message Convention
+
+To keep the commit history clean and meaningful, follow the prefix-based convention. Each commit message should start with one of the following tags:
+```
+[feat]     – A new feature
+[fix]      – A bug fix
+[refactor] – Code change that neither fixes a bug nor adds a feature
+[style]    – Code style changes (formatting, spacing, etc.)
+[test]     – Adding or fixing tests
+[docs]     – Documentation updates
+[other]    – Other changes (e.g., config files, renaming, cleanup)
+
+```
+
+## ✨ Code Formatting
+
+This project uses clang-format to maintain a consistent code style.
+To automatically format all .cpp and .h files (excluding lib/ and build/ directories), run:
+
+```
+clang-format-all-files:
+	find . -type f \( -name "*.cpp" -o -name "*.h" \) ! -path "./lib/*" ! -path "./$(BUILD_DIR)/*" -print -exec clang-format -i {} +
+```
+
+You can also add this as a Makefile target to simplify formatting during development.
+```
+make clang-format-all-files:
+```
+**Note: The formatting is also checked in the CI pipeline!**
