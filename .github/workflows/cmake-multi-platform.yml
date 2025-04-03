@@ -41,3 +41,6 @@ jobs:
       - name: Code Coverage
         working-directory: ${{github.workspace}}
         run: ./scripts/coverage_html.sh gcc
+
+      - name: Check code formatting
+        run: ./scripts/check_clang_format.sh

@@ -19,6 +19,7 @@ public:
     void createTexture();
 
     std::string getText() const;
+    void        setTextAndCreateTexture(const std::string& text);
 
 private:
     SDL_Texture* textTexture = nullptr;

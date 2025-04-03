@@ -1,15 +1,26 @@
 #include "Logger.h"
 
 Logger::LogLevel Logger::globalLogLevel = Logger::LogLevel::none;
+Logger::FileMode Logger::fileMode       = Logger::FileMode::append;
 std::ofstream    Logger::logFile;
 std::string      Logger::logFileName;
 
-void Logger::initialize(const std::string& logFileName, LogLevel logLevel)
+void Logger::initialize(const std::string& logFileName, LogLevel logLevel, FileMode fileMode)
 {
     Logger::logFileName    = logFileName;
     Logger::globalLogLevel = logLevel;
 
-    Logger::logFile.open(Logger::logFileName, std::ios::out | std::ios::app);
+    std::ios_base::openmode mode = std::ios::out;
+    if (fileMode == FileMode::append)
+    {
+        mode |= std::ios::app;
+    }
+    else
+    {
+        mode |= std::ios::trunc;
+    }
+
+    Logger::logFile.open(Logger::logFileName, mode);
     if (!Logger::logFile.is_open())
     {
         std::cerr << "Could not open log file: " << Logger::logFileName << std::endl;

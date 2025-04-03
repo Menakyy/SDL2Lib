@@ -13,6 +13,8 @@
 class Button : public Widget
 {
 public:
+    static constexpr int kBorderThickness = 3;
+
     Button(const Point&       position,
            const Size&        size,
            const std::string& text,
@@ -25,13 +27,18 @@ public:
 
     void setClickCallback(AbstractCallback* callback);
 
-    bool     isWidgetClicked(EventHandler& eventHandler);
+    void     handleEvents(EventHandler& eventHandler) override;
     SDL_Rect getRect() const;
+
+    bool getClicked() const { return isClicked; }
 
 private:
     TextField             textField;
     std::unique_ptr<View> backGround;
     AbstractCallback*     clickCallback = nullptr;
+
+    bool hovered   = false;
+    bool isClicked = false;
 };
 
 #endif /* BUTTON_H */

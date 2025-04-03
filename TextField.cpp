@@ -71,8 +71,19 @@ std::string TextField::getText() const
     return text;
 }
 
+void TextField::setTextAndCreateTexture(const std::string& text)
+{
+    this->text = text;
+    createTexture();
+}
+
 void TextField::render()
 {
+    if (not visible)
+    {
+        return;
+    }
+
     if (textTexture != nullptr)
     {
         SDL_Rect destRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };

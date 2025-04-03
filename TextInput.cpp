@@ -35,6 +35,11 @@ void TextInput::handleEvent(const SDL_Event& event)
 
 void TextInput::render()
 {
+    if (not visible)
+    {
+        return;
+    }
+
     if (textTexture != nullptr)
     {
         SDL_Rect destRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };

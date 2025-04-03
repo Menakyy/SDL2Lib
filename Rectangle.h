@@ -10,7 +10,7 @@
 class Rectangle : public ShapeView
 {
 public:
-    Rectangle(const Point& position, const Size& size, const Color& color, bool fill);
+    Rectangle(const Point& position, const Size& size, const Color& color, bool fill, int thickness = 1);
 
     void render() override;
 
@@ -18,12 +18,18 @@ public:
 
     SDL_Rect getRect() const;
 
+    void setBorderThickness(int thickness);
+
+    int getborderThickness() const;
+
 private:
     void renderFilled() const;
     void renderOutline() const;
 
 private:
     SDL_Renderer* renderer = nullptr;
+
+    int borderThickness = 1;
 };
 
 

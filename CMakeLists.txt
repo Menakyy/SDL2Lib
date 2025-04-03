@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project("SDL_Project")
 
 include(CTest)
@@ -58,6 +58,9 @@ add_library(SDL_Lib STATIC
     "Button.cpp"
     "AbstractCallback.cpp"
     "SoundManager.cpp"
+    "ScreenManager.cpp"
+    "Slider.cpp"
+    "CheckBox.cpp"
 )
 
 add_executable(${PROJECT_NAME}  "main.cpp")
