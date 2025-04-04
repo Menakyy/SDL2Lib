@@ -35,6 +35,7 @@ public:
     bool isAltPressed() const;
 
     void injectEvent(const SDL_Event& e);
+
 private:
     SDL_Event event;
 };
