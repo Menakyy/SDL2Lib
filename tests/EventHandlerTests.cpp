@@ -25,8 +25,8 @@ TEST_GROUP(EventHandlerTest)
 
 TEST(EventHandlerTest, PollEvent)
 {
-    SDL_Event event;
-    event.type = SDL_QUIT;
+    SDL_Event event = {};
+    event.type      = SDL_QUIT;
     SDL_PushEvent(&event);
 
     int result = eventHandler->pollEvent();
@@ -35,95 +35,88 @@ TEST(EventHandlerTest, PollEvent)
 
 TEST(EventHandlerTest, GetEvent)
 {
-    SDL_Event event;
-    event.type = SDL_QUIT;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_QUIT;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     SDL_Event polledEvent = eventHandler->getEvent();
     CHECK_EQUAL(SDL_QUIT, polledEvent.type);
 }
 
 TEST(EventHandlerTest, IsTextInput)
 {
-    SDL_Event event;
-    event.type = SDL_TEXTINPUT;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_TEXTINPUT;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isTextInput());
 }
 
 TEST(EventHandlerTest, IsQuit)
 {
-    SDL_Event event;
-    event.type = SDL_QUIT;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_QUIT;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isQuit());
 }
 
 TEST(EventHandlerTest, IsKeyDown)
 {
-    SDL_Event event;
-    event.type = SDL_KEYDOWN;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_KEYDOWN;
+    event.key.state = SDL_PRESSED;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isKeyDown());
 }
 
 TEST(EventHandlerTest, IsKeyUp)
 {
-    SDL_Event event;
-    event.type = SDL_KEYUP;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_KEYUP;
+    event.key.state = SDL_RELEASED;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isKeyUp());
 }
 
 TEST(EventHandlerTest, GetKeyCode)
 {
-    SDL_Event event;
+    SDL_Event event      = {};
     event.type           = SDL_KEYDOWN;
     event.key.keysym.sym = SDLK_a;
-    SDL_PushEvent(&event);
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_EQUAL(SDLK_a, eventHandler->getKeyCode());
 }
 
 TEST(EventHandlerTest, IsMouseButtonDown)
 {
-    SDL_Event event;
-    event.type = SDL_MOUSEBUTTONDOWN;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_MOUSEBUTTONDOWN;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isMouseButtonDown());
 }
 
 TEST(EventHandlerTest, IsMouseButtonUp)
 {
-    SDL_Event event;
-    event.type = SDL_MOUSEBUTTONUP;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_MOUSEBUTTONUP;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isMouseButtonUp());
 }
 
 TEST(EventHandlerTest, GetMousePosition)
 {
-    SDL_Event event;
-    event.type     = SDL_MOUSEMOTION;
-    event.motion.x = 100;
-    event.motion.y = 200;
-    SDL_PushEvent(&event);
+    SDL_Event event = {};
+    event.type      = SDL_MOUSEMOTION;
+    event.motion.x  = 100;
+    event.motion.y  = 200;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     Point mousePos = eventHandler->getMousePosition();
     CHECK_EQUAL(100, mousePos.getX());
     CHECK_EQUAL(200, mousePos.getY());
@@ -141,22 +134,21 @@ TEST(EventHandlerTest, IsPointInsideRect)
 
 TEST(EventHandlerTest, IsWindowEvent)
 {
-    SDL_Event event;
-    event.type = SDL_WINDOWEVENT;
-    SDL_PushEvent(&event);
+    SDL_Event event    = {};
+    event.type         = SDL_WINDOWEVENT;
+    event.window.event = SDL_WINDOWEVENT_SHOWN;
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_TRUE(eventHandler->isWindowEvent());
 }
 
 TEST(EventHandlerTest, GetWindowEvent)
 {
-    SDL_Event event;
+    SDL_Event event    = {};
     event.type         = SDL_WINDOWEVENT;
     event.window.event = SDL_WINDOWEVENT_CLOSE;
-    SDL_PushEvent(&event);
+    eventHandler->injectEvent(event);
 
-    eventHandler->pollEvent();
     CHECK_EQUAL(SDL_WINDOWEVENT_CLOSE, eventHandler->getWindowEvent());
 }
 

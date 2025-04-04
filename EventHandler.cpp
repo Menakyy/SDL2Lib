@@ -108,3 +108,8 @@ bool EventHandler::isAltPressed() const
 {
     return (SDL_GetModState() & KMOD_ALT) != 0;
 }
+
+void EventHandler::injectEvent(const SDL_Event& e)
+{
+    event = e;
+}
