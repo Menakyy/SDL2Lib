@@ -77,8 +77,11 @@ int Slider::getValue() const
 
 void Slider::updateThumbPosition()
 {
-    int trackWidth = track.getSize().getWidth();
-    int thumbX     = track.getPosition().getX() + ((currentValue - minValue) * trackWidth) / (maxValue - minValue);
+    int trackWidth     = track.getSize().getWidth();
+    int availableWidth = trackWidth - thumb.getSize().getWidth();
+    int offsetX        = ((currentValue - minValue) * availableWidth) / (maxValue - minValue);
+    int thumbX         = track.getPosition().getX() + offsetX;
+
     thumb.setPosition({ thumbX, track.getPosition().getY() });
 
     Logger::debug(("ThumbX: " + std::to_string(thumbX) + " | currentValue: " + std::to_string(currentValue)
