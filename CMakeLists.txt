@@ -61,6 +61,7 @@ add_library(SDL_Lib STATIC
     "ScreenManager.cpp"
     "Slider.cpp"
     "CheckBox.cpp"
+    "DropDownList.cpp"
 )
 
 add_executable(${PROJECT_NAME}  "main.cpp")
