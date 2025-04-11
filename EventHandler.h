@@ -34,6 +34,8 @@ public:
     bool isCtrlPressed() const;
     bool isAltPressed() const;
 
+    bool isKeyPressed(SDL_Keycode key) const;
+
     void injectEvent(const SDL_Event& e);
 
 private:
