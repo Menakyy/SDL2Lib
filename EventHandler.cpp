@@ -109,6 +109,11 @@ bool EventHandler::isAltPressed() const
     return (SDL_GetModState() & KMOD_ALT) != 0;
 }
 
+bool EventHandler::isKeyPressed(SDL_Keycode key) const
+{
+    return isKeyDown() && event.key.keysym.sym == key;
+}
+
 void EventHandler::injectEvent(const SDL_Event& e)
 {
     event = e;
