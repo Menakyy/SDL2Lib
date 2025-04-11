@@ -37,6 +37,28 @@ SDL_Rect Button::getRect() const
     return Utilities::convertToSDLRect(position, size);
 }
 
+bool Button::isClickedNow(const EventHandler& eventHandler) const
+{
+    if (eventHandler.isMouseButtonDown())
+    {
+        Point mousePos = Utilities::getMousePosition(eventHandler.getEvent());
+        SDL_Rect widgetRect = Utilities::convertToSDLRect(position, size);
+        return Utilities::isPointInsideRect(mousePos, widgetRect);
+    }
+    return false;
+}
+
+bool Button::isClickedOutside(const EventHandler& eventHandler) const
+{
+    if (eventHandler.isMouseButtonDown())
+    {
+        Point mousePos = Utilities::getMousePosition(eventHandler.getEvent());
+        SDL_Rect widgetRect = Utilities::convertToSDLRect(position, size);
+        return !Utilities::isPointInsideRect(mousePos, widgetRect);
+    }
+    return false;
+}
+
 void Button::render()
 {
     if (!visible)
