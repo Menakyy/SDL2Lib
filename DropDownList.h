@@ -28,7 +28,7 @@ private:
     std::vector<std::string> items;
     size_t                   selectedIndex = 0;
 
-    bool expanded = false;
+    bool expanded    = false;
     bool expandedTmp = false;
 
     FontManager                             font;

@@ -31,6 +31,7 @@ public:
     SDL_Rect getRect() const;
 
     bool getClicked() const { return isClicked; }
+
     bool isClickedNow(const EventHandler& eventHandler) const;
     bool isClickedOutside(const EventHandler& eventHandler) const;
 
