@@ -1,6 +1,7 @@
 // NOLINTBEGIN
 #include "Button.h"
 #include "Container.h"
+#include "DropDownList.h"
 #include "EventHandler.h"
 #include "FontManager.h"
 #include "Image.h"
@@ -45,63 +46,15 @@ int main()
     Container container;
     container.setRenderer(renderer.getRenderer());
 
-    FontManager font("tests/assets/fonts/LiberationSans-Bold.ttf", 24);
-    TextField   textField(
-        "Rock game",
-        { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2, (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) },
-        { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
-        { 255, 255, 255, 255 },
-        font.getFont());
+    DropDownList dropdown(Point(100, 100), Size(200, 30), Color(200, 200, 200, 255));
+    dropdown.addItem("Option 1");
+    dropdown.addItem("Option 2");
+    dropdown.addItem("Option 3");
 
-    TextField exitField(
-        "Exit",
-        { (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2, (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) },
-        { DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
-        { 255, 255, 255, 255 },
-        font.getFont());
-
-    Button button(
-        { (DEFAULT_SCREEN_WIDTH - 200) / 2, (DEFAULT_SCREEN_HEIGHT - 250) / 2 + textField.getSize().getHeight() + 10 },
-        { 200, 100 },
-        "Start game",
-        font.getFont(),
-        { 255, 255, 255, 255 },
-        { 0, 0, 255, 255 });
-
-    SoundManager guitarSound;
-    guitarSound.loadSound("guitar", "tests/assets/sounds/guitar.mp3");
-
-    SoundManager click;
-    click.loadSound("click", "tests/assets/sounds/click.mp3");
-    container.addChild(&textField);
-
-    textField.createTexture();
+    container.addChild(&dropdown);
 
     EventHandler eventHandler;
-    bool         exit  = false;
-    int          value = 250;
-
-    guitarSound.playSound("guitar");
-    while (not exit)
-    {
-        if (eventHandler.isQuit() || (value < -250))
-        {
-            exit = true;
-        }
-
-        textField.setPosition({ (DEFAULT_SCREEN_WIDTH - DEFAULT_SCREEN_WIDTH / 2) / 2,
-                                (DEFAULT_SCREEN_HEIGHT - DEFAULT_SCREEN_HEIGHT / 2) + value });
-        value -= 4;
-
-        renderer.applyRenderDrawColor();
-        renderer.clear();
-        container.render();
-        renderer.present();
-        SDL_Delay(16);
-    }
-
-    exit = false;
-    container.addChild(&button);
+    bool         exit = false;
 
     while (not exit)
     {
@@ -112,18 +65,9 @@ int main()
                 exit = true;
             }
 
-            button.handleEvents(eventHandler);
-
-            if (button.getClicked())
-            {
-                Logger::info("Button clicked");
-                click.playSound("click");
-                container.clear();
-                container.addChild(&exitField);
-                exitField.createTexture();
-                exit = true;
-            }
+            dropdown.handleEvents(eventHandler);
         }
+
 
         renderer.applyRenderDrawColor();
         renderer.clear();
@@ -132,8 +76,6 @@ int main()
         SDL_Delay(16);
     }
 
-
-    SDL_Delay(500);
     return 0;
 }
 
