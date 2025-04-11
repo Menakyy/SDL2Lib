@@ -34,18 +34,18 @@ jobs:
         run: cmake -B ${{github.workspace}}/${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DTESTS=ON -DCLANG_TIDY=ON -DCODE_COVERAGE=ON -DENABLE_VALGRIND=ON
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} -j
+        run: cmake --build ${{github.workspace}}/${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} -j || echo "::error::Build failed. Check the logs for details."
 
       - name: Test
         working-directory: ${{github.workspace}}/${{env.BUILD_DIR}}
         env:
           DISPLAY: ":99"
           XDG_RUNTIME_DIR: "/tmp/runtime-dir"
-        run: ctest -C ${{env.BUILD_TYPE}} --rerun-failed --output-on-failure
+        run: ctest -C ${{env.BUILD_TYPE}} --rerun-failed --output-on-failure  || echo "::error::Tests failed. Check the logs for details."
 
       - name: Code Coverage
         working-directory: ${{github.workspace}}
         run: ./scripts/coverage_html.sh gcc
 
       - name: Check code formatting
-        run: ./scripts/check_clang_format.sh
+        run: ./scripts/check_clang_format.sh  || echo "::error::Formating failed. Check the logs for details."
