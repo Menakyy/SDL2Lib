@@ -13,7 +13,10 @@
 class DropDownList : public Widget
 {
 public:
-    DropDownList(const Point& position, const Size& size, const Color& color = Color(255, 255, 255, 255));
+    DropDownList(const Point& position,
+                 const Size&  size,
+                 const Color& listColor = { 0, 0, 255, 255 },
+                 const Color& textColor = { 255, 255, 255, 255 });
     ~DropDownList();
 
     void render() override;
@@ -22,18 +25,27 @@ public:
 
     void addItem(const std::string& item);
     void removeItem(const std::string& item);
+    void createList();
+
     void setOnSelectCallback(const std::function<void(const std::string&)>& callback);
 
 private:
-    std::vector<std::string> items;
-    size_t                   selectedIndex = 0;
+    std::vector<std::string>             items;
+    std::vector<std::unique_ptr<Button>> itemButtons;
+
+    size_t selectedIndex = 0;
 
     bool expanded    = false;
     bool expandedTmp = false;
 
     FontManager                             font;
-    Button*                                 dropDownBox;
+    std::unique_ptr<Button>                 dropDownBox;
     std::function<void(const std::string&)> onSelectCallback;
+
+    Color listColor = { 0, 0, 0, 255 };
+    Color textColor = { 0, 0, 0, 255 };
+
+    void rebuildItemButtons();
 };
 
 #endif  // DROPDOWNLIST_H

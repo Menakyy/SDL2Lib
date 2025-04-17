@@ -46,12 +46,13 @@ int main()
     Container container;
     container.setRenderer(renderer.getRenderer());
 
-    DropDownList dropdown(Point(100, 100), Size(200, 30), Color(200, 200, 200, 255));
+    DropDownList dropdown(Point(100, 100), Size(200, 30));
+    container.addChild(&dropdown);
+
     dropdown.addItem("Option 1");
     dropdown.addItem("Option 2");
     dropdown.addItem("Option 3");
-
-    container.addChild(&dropdown);
+    dropdown.createList();
 
     EventHandler eventHandler;
     bool         exit = false;
