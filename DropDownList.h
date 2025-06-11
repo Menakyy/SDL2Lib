@@ -29,11 +29,13 @@ public:
 
     void setOnSelectCallback(const std::function<void(const std::string&)>& callback);
 
+    int getSelectedIndex() const;
+
 private:
     std::vector<std::string>             items;
     std::vector<std::unique_ptr<Button>> itemButtons;
 
-    size_t selectedIndex = 0;
+    int selectedIndex = -1;
 
     bool expanded    = false;
     bool expandedTmp = false;
