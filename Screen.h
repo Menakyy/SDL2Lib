@@ -14,6 +14,9 @@ public:
     virtual void handleEvents(EventHandler& eventHandler, bool& exit) = 0;
     virtual void update()                                             = 0;
     virtual void render(Renderer& renderer)                           = 0;
+
+    virtual void onEnter() = 0;
+    virtual void onExit()  = 0;
 };
 
 #endif  // SCREEN_H
