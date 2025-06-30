@@ -25,7 +25,7 @@ void SoundManager::cleanup()
         music = nullptr;
     }
 
-    Mix_CloseAudio();
+    // Mix_CloseAudio();
 }
 
 bool SoundManager::loadSound(const std::string& id, const std::string& filename)
