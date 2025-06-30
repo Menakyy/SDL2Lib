@@ -13,10 +13,12 @@
 class DropDownList : public Widget
 {
 public:
-    DropDownList(const Point& position,
-                 const Size&  size,
-                 const Color& listColor = { 0, 0, 255, 255 },
-                 const Color& textColor = { 255, 255, 255, 255 });
+    DropDownList(const Point&       position,
+                 const Size&        size,
+                 const Color&       listColor = { 0, 0, 255, 255 },
+                 const Color&       textColor = { 255, 255, 255, 255 },
+                 const std::string& title     = "Title");
+
     ~DropDownList();
 
     void render() override;
