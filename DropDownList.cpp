@@ -7,12 +7,12 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-DropDownList::DropDownList(const Point& position, const Size& size, const Color& listColor, const Color& textColor)
+DropDownList::DropDownList(const Point& position, const Size& size, const Color& listColor, const Color& textColor, const std::string& title)
     : Widget(position, size),
       listColor(listColor),
       textColor(textColor),
       font("assets/fonts/LiberationSans-Bold.ttf", 24),
-      dropDownBox(std::make_unique<Button>(position, size, "DropDownList", font.getFont(), textColor, listColor))
+      dropDownBox(std::make_unique<Button>(position, size, title, font.getFont(), textColor, listColor))
 {
 }
 
