@@ -22,6 +22,10 @@ public:
 
     SDL_Texture* getTexture() const { return texture; }
 
+    void setAngle(double a) { angle = a; }
+
+    double getAngle() const { return angle; }
+
     void logImageParams();
 
 private:
@@ -29,6 +33,8 @@ private:
     SDL_Rect     ImageDestRect = { 0, 0, 0, 0 };
     SDL_Rect     ImageSrcRect  = { 0, 0, 0, 0 };
     std::string  imageFilePath = "";
+
+    double angle = 0.0;
 
     struct ImageParams
     {
