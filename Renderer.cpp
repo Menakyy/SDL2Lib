@@ -10,6 +10,7 @@ Renderer::Renderer(SDL_Window* window, int index, Uint32 flags)
     {
         throw std::runtime_error("Failed to create renderer: " + std::string(SDL_GetError()));
     }
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 
 Renderer::~Renderer()
