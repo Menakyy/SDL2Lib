@@ -7,7 +7,11 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-DropDownList::DropDownList(const Point& position, const Size& size, const Color& listColor, const Color& textColor, const std::string& title)
+DropDownList::DropDownList(const Point&       position,
+                           const Size&        size,
+                           const Color&       listColor,
+                           const Color&       textColor,
+                           const std::string& title)
     : Widget(position, size),
       listColor(listColor),
       textColor(textColor),
