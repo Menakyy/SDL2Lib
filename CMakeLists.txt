@@ -63,10 +63,11 @@ add_library(SDL_Lib STATIC
     "CheckBox.cpp"
     "DropDownList.cpp"
     "utils/Timer.cpp"
+    "Animation.cpp"
 )
 
-add_executable(${PROJECT_NAME}  "main.cpp")
-target_link_libraries(${PROJECT_NAME}  SDL_Lib)
+add_executable(${PROJECT_NAME} "main.cpp")
+target_link_libraries(${PROJECT_NAME} SDL_Lib)
 
 if(CODE_COVERAGE)
     target_compile_options(${PROJECT_NAME} PUBLIC --coverage)
