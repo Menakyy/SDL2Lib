@@ -34,6 +34,8 @@ def main() -> None:
     invalid = False
     for line in lines:
         commit_hash, commit_message = line.split(" ", 1)
+        if commit_message.startswith("Merge "):
+            continue
         if not any(
             commit_message.startswith(prefix) for prefix in correct_commit_messages
         ):
