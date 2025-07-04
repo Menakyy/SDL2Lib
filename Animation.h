@@ -2,25 +2,27 @@
 #define ANIMATION_H
 
 #include <SDL2/SDL.h>
+#include <string>
 #include <vector>
 
 class Animation
 {
 public:
-    Animation(SDL_Texture* texture, int frameWidth, int frameHeight, int numFrames, int frameTime);
-    ~Animation();
-
-    void update();
-    void render(SDL_Renderer* renderer, int x, int y);
+    Animation(const std::vector<std::string>& paths, int milliseconds);
+    // void               setFramePaths(const std::vector<std::string>& paths);
+    // void               setFrameTime(int milliseconds);
+    void               play();
+    void               stop();
+    void               update();
+    const std::string& getCurrentFramePath() const;
 
 private:
-    SDL_Texture* texture;
-    int          frameWidth;
-    int          frameHeight;
-    int          numFrames;
-    int          frameTime;
-    int          currentFrame;
-    int          elapsedTime;
+    std::vector<std::string> framePaths;
+    int                      currentFrame  = 0;
+    int                      frameTime     = 100;
+    Uint32                   lastFrameTime = 0;
+    bool                     playing       = false;
 };
+
 
 #endif  // ANIMATION_H

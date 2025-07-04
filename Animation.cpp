@@ -1,33 +1,49 @@
 #include "Animation.h"
 
-Animation::Animation(SDL_Texture* texture, int frameWidth, int frameHeight, int numFrames, int frameTime)
-    : texture(texture),
-      frameWidth(frameWidth),
-      frameHeight(frameHeight),
-      numFrames(numFrames),
-      frameTime(frameTime),
-      currentFrame(0),
-      elapsedTime(0)
+// void Animation::setFramePaths(const std::vector<std::string>& paths)
+// {
+//     framePaths   = paths;
+//     currentFrame = 0;
+// }
+
+// void Animation::setFrameTime(int milliseconds)
+// {
+//     frameTime = milliseconds;
+// }
+
+Animation::Animation(const std::vector<std::string>& paths, int milliseconds)
+    : framePaths(paths),
+      frameTime(milliseconds)
 {
 }
 
-Animation::~Animation()
+void Animation::play()
 {
+    playing       = true;
+    lastFrameTime = SDL_GetTicks();
+}
+
+void Animation::stop()
+{
+    playing = false;
 }
 
 void Animation::update()
 {
-    elapsedTime += SDL_GetTicks();
-    if (elapsedTime >= frameTime)
+    if (!playing || framePaths.empty())
     {
-        currentFrame = (currentFrame + 1) % numFrames;
-        elapsedTime  = 0;
+        return;
+    }
+
+    Uint32 now = SDL_GetTicks();
+    if (now - lastFrameTime >= (Uint32)frameTime)
+    {
+        currentFrame  = (currentFrame + 1) % framePaths.size();
+        lastFrameTime = now;
     }
 }
 
-void Animation::render(SDL_Renderer* renderer, int x, int y)
+const std::string& Animation::getCurrentFramePath() const
 {
-    SDL_Rect srcRect  = { currentFrame * frameWidth, 0, frameWidth, frameHeight };
-    SDL_Rect destRect = { x, y, frameWidth, frameHeight };
-    SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
+    return framePaths[currentFrame];
 }
