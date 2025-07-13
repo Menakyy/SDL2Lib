@@ -36,6 +36,8 @@ public:
 
     bool isKeyPressed(SDL_Keycode key) const;
 
+    const Uint8* getKeyboardState() const;
+
     void injectEvent(const SDL_Event& e);
 
 private:
