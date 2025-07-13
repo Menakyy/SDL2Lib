@@ -114,6 +114,11 @@ bool EventHandler::isKeyPressed(SDL_Keycode key) const
     return isKeyDown() && event.key.keysym.sym == key;
 }
 
+const Uint8* EventHandler::getKeyboardState() const
+{
+    return SDL_GetKeyboardState(nullptr);
+}
+
 void EventHandler::injectEvent(const SDL_Event& e)
 {
     event = e;
