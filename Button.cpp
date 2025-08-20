@@ -17,6 +17,11 @@ Button::Button(const Point&       position,
 
 void Button::handleEvents(EventHandler& eventHandler)
 {
+    if (!isActive)
+    {
+        return;
+    }
+
     Point    mousePos   = Utilities::getMousePosition(eventHandler.getEvent());
     SDL_Rect widgetRect = Utilities::convertToSDLRect(position, size);
 
@@ -57,6 +62,11 @@ bool Button::isClickedOutside(const EventHandler& eventHandler) const
         return !Utilities::isPointInsideRect(mousePos, widgetRect);
     }
     return false;
+}
+
+void Button::setEnabled(bool active)
+{
+    isActive = active;
 }
 
 void Button::render()

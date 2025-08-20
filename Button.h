@@ -35,6 +35,8 @@ public:
     bool isClickedNow(const EventHandler& eventHandler) const;
     bool isClickedOutside(const EventHandler& eventHandler) const;
 
+    void setEnabled(bool active);
+
 private:
     TextField             textField;
     std::unique_ptr<View> backGround;
@@ -42,6 +44,7 @@ private:
 
     bool hovered   = false;
     bool isClicked = false;
+    bool isActive  = true;
 };
 
 #endif /* BUTTON_H */
