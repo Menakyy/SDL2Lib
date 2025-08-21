@@ -81,15 +81,14 @@ bool SoundManager::isSoundPlaying(const std::string& id)
         return false;
     }
 
-    for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
+    const int channelCount = Mix_AllocateChannels(-1);
+    for (int ch = 0; ch < channelCount; ++ch)
     {
-        bool status = Mix_Playing(channel) >= 0;
-        if (Mix_GetChunk(channel) == it->second && status)
+        if (Mix_GetChunk(ch) == it->second && Mix_Playing(ch) == 1)
         {
             return true;
         }
     }
-
     return false;
 }
 
