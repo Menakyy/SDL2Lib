@@ -30,6 +30,17 @@ public:
 
     void stop() { running = false; }
 
+    int getRemainingTime() const
+    {
+        if (!running)
+        {
+            return 0;
+        }
+        auto now     = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - startTime).count();
+        return static_cast<int>(durationMs - elapsed);
+    }
+
 private:
     std::chrono::steady_clock::time_point startTime;
     int                                   durationMs;
