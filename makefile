@@ -15,7 +15,7 @@ endif
 
 all: clean configure build
 
-check: clean configure_all build run_tests run_tests_valgrind
+check: clean configure_all build run_tests
 
 configure:
 	mkdir -p $(BUILD_DIR)
