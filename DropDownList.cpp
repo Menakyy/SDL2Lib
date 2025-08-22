@@ -26,6 +26,11 @@ DropDownList::~DropDownList()
 
 void DropDownList::render()
 {
+    if (!visible)
+    {
+        return;
+    }
+
     if (renderer)
     {
         dropDownBox->render();
@@ -55,6 +60,11 @@ void DropDownList::handleEvents(EventHandler& eventHandler)
         for (size_t i = 0; i < itemButtons.size(); ++i)
         {
             itemButtons[i]->handleEvents(eventHandler);
+
+            if (i == selectedIndex)
+            {
+                itemButtons[i]->setHovered(true);
+            }
 
             if (itemButtons[i]->isClickedNow(eventHandler))
             {
