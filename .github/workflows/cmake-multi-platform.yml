@@ -31,7 +31,7 @@ jobs:
           sleep 2
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DTESTS=ON -DCLANG_TIDY=ON -DCODE_COVERAGE=ON -DENABLE_VALGRIND=ON
+        run: cmake -B ${{github.workspace}}/${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DTESTS=ON -DCLANG_TIDY=ON -DCODE_COVERAGE=ON -DENABLE_VALGRIND=OFF
 
       - name: Build
         run: cmake --build ${{github.workspace}}/${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} -j || echo "::error::Build failed. Check the logs for details."

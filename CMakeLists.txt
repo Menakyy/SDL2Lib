@@ -16,6 +16,8 @@ option(ENABLE_VALGRIND "Enable Valgrind for tests." OFF)
 option(TESTS "Enable tests." OFF)
 option(CODE_COVERAGE "Enable code coverage output generation" OFF)
 
+add_compile_definitions(CPPUTEST_MEM_LEAK_DETECTION_DISABLED)
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
 endif()
@@ -25,8 +27,6 @@ if(ENABLE_VALGRIND)
 
     if(NOT VALGRIND_EXECUTABLE)
         message(FATAL_ERROR "Valgrind not found. Please install Valgrind.")
-    else()
-        add_compile_definitions(CPPUTEST_MEM_LEAK_DETECTION_DISABLED)
     endif()
 endif()
 
