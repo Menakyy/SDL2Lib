@@ -37,6 +37,10 @@ public:
 
     void setEnabled(bool active);
 
+    bool isHovered() const { return hovered; }
+
+    void setHovered(bool state) { hovered = state; }
+
 private:
     TextField             textField;
     std::unique_ptr<View> backGround;
