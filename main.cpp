@@ -27,10 +27,11 @@
 
 const int DEFAULT_SCREEN_WIDTH  = 840;
 const int DEFAULT_SCREEN_HEIGHT = 680;
+const int SLEEP                 = 500;
 
 int main()
 {
-    Logger::initialize("logs/log.txt", Logger::LogLevel::info);
+    Logger::initialize("logs/log.txt", Logger::LogLevel::debug);
 
     SDLSystem sdl(SDL_INIT_VIDEO, static_cast<SDLSystem::InitOptions>(SDLSystem::ttf | SDLSystem::audio));
 
@@ -56,10 +57,17 @@ int main()
     container.addChild(&statusBar);
 
     auto& frontRect = statusBar.getFrontRectangle();
-    frontRect.setSize(Size(50, 30));
+    frontRect.setSize(Size(0, 30));
 
     EventHandler eventHandler;
     bool         exit = false;
+
+    float table[]  = { 0.0f, 0.3f, 0.5f, 1.0f, 0.3f };
+    float table2[] = { 2.0f, 5.3f, 8.5f, 10.0f, 2.3f };
+    float table3[] = { 100.0f, 200.0f, 300.0f, 1000.0f, 100.0f };
+    int   idx      = 0;
+
+    statusBar.setFillingType(StatusBar::FillingType::Percent);
 
     while (not exit)
     {
@@ -79,8 +87,11 @@ int main()
         renderer.present();
         SDL_Delay(16);
 
-        frontRect.setSize(Size(frontRect.getSize().getWidth() + 1, 30));
+        statusBar.setProgress(table[idx]);
+        SDL_Delay(SLEEP);
+        idx = (idx + 1) % 5;
     }
+
 
     return 0;
 }

@@ -16,7 +16,12 @@ StatusBar::StatusBar(const Point&       position,
       backgroundColor(backgroundColor),
       frontColor(frontColor),
       backgroundRect(position, size, backgroundColor, true),
-      frontRect(position, size, frontColor, true)
+      frontRect(position, size, frontColor, true),
+      textField(std::make_unique<TextField>(text,
+                                            Point(position.getX() + 5, position.getY() + 5),
+                                            Size(size.getWidth() - 10, size.getHeight() - 10),
+                                            textColor,
+                                            font->getFont()))
 {
 }
 
@@ -34,6 +39,7 @@ void StatusBar::render()
 
     backgroundRect.render();
     frontRect.render();
+    textField->render();
 }
 
 void StatusBar::handleEvents(EventHandler& eventHandler)
@@ -52,20 +58,36 @@ void StatusBar::setRenderer(SDL_Renderer* renderer)
 
     backgroundRect.setRenderer(renderer);
     frontRect.setRenderer(renderer);
+    textField->setRenderer(renderer);
+    textField->createTexture();
 }
 
-void StatusBar::setProgress(float progress)
+void StatusBar::setProgress(float value, int jumps)
 {
-    if (progress < 0.0f)
+    float percent = 0.0f;
+    switch (fillingType)
     {
-        progress = 0.0f;
+        case FillingType::Width:
+            percent = value / static_cast<float>(size.getWidth());
+            break;
+        case FillingType::Percent:
+            percent = value;
+            break;
+        case FillingType::Jump:
+            percent = value / static_cast<float>(jumps);
+            break;
     }
 
-    if (progress > 1.0f)
+    if (percent < 0.0f)
     {
-        progress = 1.0f;
+        percent = 0.0f;
     }
 
-    int newWidth = static_cast<int>(size.getWidth() * progress);
+    if (percent > 1.0f)
+    {
+        percent = 1.0f;
+    }
+
+    int newWidth = static_cast<int>(size.getWidth() * percent);
     frontRect.setSize(Size(newWidth, size.getHeight()));
 }
