@@ -12,6 +12,7 @@
 #include "Renderer.h"
 #include "SDLSystem.h"
 #include "SoundManager.h"
+#include "StatusBar.h"
 #include "TextField.h"
 #include "TextInput.h"
 #include "Utilities.h"
@@ -46,13 +47,16 @@ int main()
     Container container;
     container.setRenderer(renderer.getRenderer());
 
-    DropDownList dropdown(Point(100, 100), Size(200, 30));
-    container.addChild(&dropdown);
+    FontManager fontManager("assets/fonts/LiberationSans-Bold.ttf", 24);
 
-    dropdown.addItem("Option 1");
-    dropdown.addItem("Option 2");
-    dropdown.addItem("Option 3");
-    dropdown.createList();
+    // TextInput textInput(Point(100, 200), Size(200, 30), fontManager.getFont(), { 255, 0, 0, 255 });
+    // container.addChild(&textInput);
+
+    StatusBar statusBar(Point(100, 200), Size(400, 30), &fontManager, "Status Bar");
+    container.addChild(&statusBar);
+
+    auto& frontRect = statusBar.getFrontRectangle();
+    frontRect.setSize(Size(50, 30));
 
     EventHandler eventHandler;
     bool         exit = false;
@@ -66,15 +70,16 @@ int main()
                 exit = true;
             }
 
-            dropdown.handleEvents(eventHandler);
+            // textInput.handleEvent(eventHandler.getEvent());
         }
-
 
         renderer.applyRenderDrawColor();
         renderer.clear();
         container.render();
         renderer.present();
         SDL_Delay(16);
+
+        frontRect.setSize(Size(frontRect.getSize().getWidth() + 1, 30));
     }
 
     return 0;

@@ -64,6 +64,7 @@ add_library(SDL_Lib STATIC
     "DropDownList.cpp"
     "utils/Timer.cpp"
     "Animation.cpp"
+    "StatusBar.cpp"
 )
 
 add_executable(${PROJECT_NAME} "main.cpp")
