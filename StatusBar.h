@@ -4,16 +4,26 @@
 #include "Color.h"
 #include "FontManager.h"
 #include "Rectangle.h"
+#include "TextField.h"
 #include "Widget.h"
+
+#include <memory>
 
 class StatusBar : public Widget
 {
 public:
+    enum class FillingType
+    {
+        Width,
+        Percent,
+        Jump
+    } fillingType = FillingType::Percent;
+
     StatusBar(const Point&       position,
               const Size&        size,
               FontManager*       font,
               const std::string& text            = "",
-              const Color&       textColor       = { 255, 255, 255, 255 },
+              const Color&       textColor       = { 0, 0, 0, 255 },
               const Color&       backgroundColor = { 255, 255, 255, 255 },
               const Color&       frontColor      = { 0, 255, 0, 255 });
     ~StatusBar();
@@ -51,7 +61,19 @@ public:
 
     Rectangle& getBackgroundRectangle() { return backgroundRect; }
 
-    void setProgress(float progress);
+    /*
+        statusBar.setProgress(0.5f); - for FillingType::Percent
+
+        statusBar.setProgress(5.0f, 10); - for FillingType::Jump with 10 jumps
+
+        statusBar.setProgress(100.0f); - for FillingType::Width
+    */
+    void setProgress(float value, int jumps = 10);
+
+    void setFillingType(FillingType type) { fillingType = type; }
+
+    FillingType getFillingType() const { return fillingType; }
+
 
 private:
     FontManager* font;
@@ -62,6 +84,8 @@ private:
 
     Rectangle backgroundRect;
     Rectangle frontRect;
+
+    std::unique_ptr<TextField> textField = nullptr;
 };
 
 
