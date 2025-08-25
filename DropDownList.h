@@ -15,6 +15,7 @@ class DropDownList : public Widget
 public:
     DropDownList(const Point&       position,
                  const Size&        size,
+                 FontManager*       font,
                  const Color&       listColor = { 0, 0, 255, 255 },
                  const Color&       textColor = { 255, 255, 255, 255 },
                  const std::string& title     = "Title");
@@ -42,7 +43,7 @@ private:
     bool expanded    = false;
     bool expandedTmp = false;
 
-    FontManager                             font;
+    FontManager*                            font;
     std::unique_ptr<Button>                 dropDownBox;
     std::function<void(const std::string&)> onSelectCallback;
 

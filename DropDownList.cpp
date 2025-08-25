@@ -9,14 +9,15 @@
 
 DropDownList::DropDownList(const Point&       position,
                            const Size&        size,
+                           FontManager*       font,
                            const Color&       listColor,
                            const Color&       textColor,
                            const std::string& title)
     : Widget(position, size),
       listColor(listColor),
       textColor(textColor),
-      font("assets/fonts/LiberationSans-Bold.ttf", 24),
-      dropDownBox(std::make_unique<Button>(position, size, title, font.getFont(), textColor, listColor))
+      font(font),
+      dropDownBox(std::make_unique<Button>(position, size, title, font->getFont(), textColor, listColor))
 {
 }
 
@@ -91,6 +92,12 @@ void DropDownList::handleEvents(EventHandler& eventHandler)
 
 void DropDownList::setRenderer(SDL_Renderer* renderer)
 {
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null");
+        return;
+    }
+
     this->renderer = renderer;
     dropDownBox->setRenderer(renderer);
 }
@@ -128,6 +135,18 @@ int DropDownList::getSelectedIndex() const
 
 void DropDownList::rebuildItemButtons()
 {
+    if (renderer == nullptr)
+    {
+        Logger::error("Renderer is null, cannot rebuild item buttons.");
+        return;
+    }
+
+    if (font == nullptr)
+    {
+        Logger::error("FontManager is null, cannot rebuild item buttons.");
+        return;
+    }
+
     itemButtons.clear();
 
     for (size_t i = 0; i < items.size(); ++i)
@@ -135,7 +154,7 @@ void DropDownList::rebuildItemButtons()
         const int spacing = 5;
         Point     itemPos(position.getX(), position.getY() + (i + 1) * size.getHeight() + spacing * i);
 
-        auto button = std::make_unique<Button>(itemPos, size, items[i], font.getFont(), textColor, listColor);
+        auto button = std::make_unique<Button>(itemPos, size, items[i], font->getFont(), textColor, listColor);
 
         // Logger::debug(("Text color: " + std::to_string(textColor.getR()) + ", " + std::to_string(textColor.getG())
         //                + ", " + std::to_string(textColor.getB()) + ", " + std::to_string(textColor.getA()))
