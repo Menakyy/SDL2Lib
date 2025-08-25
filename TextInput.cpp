@@ -63,26 +63,37 @@ void TextInput::createTexture()
     if (textTexture != nullptr)
     {
         SDL_DestroyTexture(textTexture);
+        textTexture = nullptr;
     }
+
+    if (renderer == nullptr)
+    {
+        Logger::error("TextInput: renderer is null in createTexture()");
+        return;
+    }
+
     if (inputText.empty())
     {
+        textSrcRect = { 0, 0, 0, 0 };
         return;
     }
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, inputText.c_str(), textColor);
-    if (textSurface == nullptr)
+
+    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, inputText.c_str(), textColor);
+    if (!textSurface)
     {
-        Logger::error(("Failed to create text input surface: " + std::string(SDL_GetError())).c_str());
+        Logger::error(("Failed to create text surface: " + std::string(TTF_GetError())).c_str());
         return;
     }
+
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    if (textSurface == nullptr)
+    if (!textTexture)
     {
-        Logger::error(("Failed to create text input texture: " + std::string(SDL_GetError())).c_str());
+        Logger::error(("Failed to create text texture: " + std::string(SDL_GetError())).c_str());
+        SDL_FreeSurface(textSurface);
+        return;
     }
-    else
-    {
-        textSrcRect = { 0, 0, textSurface->w, textSurface->h };
-    }
+
+    textSrcRect = { 0, 0, textSurface->w, textSurface->h };
     SDL_FreeSurface(textSurface);
 }
 
