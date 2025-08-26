@@ -33,7 +33,7 @@ public:
     void handleEvents(EventHandler& eventHandler) override;
     void setRenderer(SDL_Renderer* renderer) override;
 
-    void setText(const std::string& text) { this->text = text; }
+    void setText(const std::string& text);
 
     const std::string& getText() const { return text; }
 

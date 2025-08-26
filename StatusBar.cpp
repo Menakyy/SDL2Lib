@@ -62,6 +62,12 @@ void StatusBar::setRenderer(SDL_Renderer* renderer)
     textField->createTexture();
 }
 
+void StatusBar::setText(const std::string& text)
+{
+    this->text = text;
+    textField->setTextAndCreateTexture(text);
+}
+
 void StatusBar::setProgress(float value, int jumps)
 {
     float percent = 0.0f;

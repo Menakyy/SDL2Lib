@@ -53,7 +53,7 @@ int main()
     // TextInput textInput(Point(100, 200), Size(200, 30), fontManager.getFont(), { 255, 0, 0, 255 });
     // container.addChild(&textInput);
 
-    StatusBar statusBar(Point(100, 200), Size(400, 30), &fontManager, "Status Bar");
+    StatusBar statusBar(Point(100, 200), Size(400, 30), &fontManager, "Loading... 0%");
     container.addChild(&statusBar);
 
     auto& frontRect = statusBar.getFrontRectangle();
@@ -67,6 +67,7 @@ int main()
     float table3[] = { 100.0f, 200.0f, 300.0f, 1000.0f, 100.0f };
     int   idx      = 0;
 
+    float progress = 0.0f;
     statusBar.setFillingType(StatusBar::FillingType::Percent);
 
     while (not exit)
@@ -87,9 +88,13 @@ int main()
         renderer.present();
         SDL_Delay(16);
 
-        statusBar.setProgress(table[idx]);
-        SDL_Delay(SLEEP);
-        idx = (idx + 1) % 5;
+        statusBar.setProgress(progress);
+        statusBar.setText("Loading... " + std::to_string(static_cast<int>(progress * 100)) + "%");
+        if (progress > 1.0f)
+        {
+            progress = 0.0f;
+        }
+        progress += 0.01f;
     }
 
 
