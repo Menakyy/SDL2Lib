@@ -26,6 +26,10 @@ public:
 
     double getAngle() const { return angle; }
 
+    void setFlip(SDL_RendererFlip value) { flip = value; }
+
+    SDL_RendererFlip getFlip() const { return flip; }
+
     void logImageParams();
 
 private:
@@ -34,7 +38,8 @@ private:
     SDL_Rect     ImageSrcRect  = { 0, 0, 0, 0 };
     std::string  imageFilePath = "";
 
-    double angle = 0.0;
+    double           angle = 0.0;
+    SDL_RendererFlip flip  = SDL_FLIP_NONE;
 
     struct ImageParams
     {

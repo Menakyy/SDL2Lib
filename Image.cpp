@@ -65,9 +65,9 @@ void Image::render()
     {
         // logImageParams();
         ImageDestRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };
-        if (angle != 0.0)
+        if (angle != 0.0 || flip != SDL_FLIP_NONE)
         {
-            SDL_RenderCopyEx(renderer, texture, &ImageSrcRect, &ImageDestRect, angle, nullptr, SDL_FLIP_NONE);
+            SDL_RenderCopyEx(renderer, texture, &ImageSrcRect, &ImageDestRect, angle, nullptr, flip);
         }
         else
         {
