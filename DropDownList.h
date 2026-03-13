@@ -32,7 +32,8 @@ public:
 
     void setOnSelectCallback(const std::function<void(const std::string&)>& callback);
 
-    int getSelectedIndex() const;
+    int  getSelectedIndex() const;
+    void setPosition(const Point& position);
 
 private:
     std::vector<std::string>             items;

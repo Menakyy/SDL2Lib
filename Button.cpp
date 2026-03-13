@@ -102,6 +102,17 @@ void Button::setClickCallback(AbstractCallback* callback)
     clickCallback = callback;
 }
 
+void Button::setPosition(const Point& position)
+{
+    this->position = position;
+    textField.setPosition(position);
+
+    if (backGround != nullptr)
+    {
+        backGround->setPosition(position);
+    }
+}
+
 void Button::setRenderer(SDL_Renderer* renderer)
 {
     if (renderer == nullptr)
