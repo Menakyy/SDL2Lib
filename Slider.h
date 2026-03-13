@@ -23,6 +23,7 @@ public:
 
     void setValue(int value);
     int  getValue() const;
+    void setPosition(const Point& position);
 
 private:
     int minValue;

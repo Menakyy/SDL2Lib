@@ -75,3 +75,13 @@ bool CheckBox::getChecked() const
 {
     return checked;
 }
+
+void CheckBox::setPosition(const Point& position)
+{
+    this->position = position;
+
+    if (checkBox != nullptr)
+    {
+        checkBox->setPosition(position);
+    }
+}

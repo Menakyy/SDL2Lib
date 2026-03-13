@@ -26,6 +26,7 @@ public:
     void setRenderer(SDL_Renderer* renderer) override;
 
     void setClickCallback(AbstractCallback* callback);
+    void setPosition(const Point& position);
 
     void     handleEvents(EventHandler& eventHandler) override;
     SDL_Rect getRect() const;

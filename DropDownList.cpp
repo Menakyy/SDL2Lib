@@ -133,6 +133,21 @@ int DropDownList::getSelectedIndex() const
     return selectedIndex;
 }
 
+void DropDownList::setPosition(const Point& position)
+{
+    this->position = position;
+
+    if (dropDownBox != nullptr)
+    {
+        dropDownBox->setPosition(position);
+    }
+
+    if (renderer != nullptr)
+    {
+        rebuildItemButtons();
+    }
+}
+
 void DropDownList::rebuildItemButtons()
 {
     if (renderer == nullptr)

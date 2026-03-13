@@ -75,6 +75,13 @@ int Slider::getValue() const
     return currentValue;
 }
 
+void Slider::setPosition(const Point& position)
+{
+    this->position = position;
+    track.setPosition(position);
+    updateThumbPosition();
+}
+
 void Slider::updateThumbPosition()
 {
     int trackWidth     = track.getSize().getWidth();

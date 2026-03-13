@@ -20,6 +20,7 @@ public:
     void handleEvents(EventHandler& eventHandler) override;
 
     bool getChecked() const;
+    void setPosition(const Point& position);
 
 private:
     std::unique_ptr<Rectangle> checkBox;
