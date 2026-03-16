@@ -2,6 +2,17 @@
 
 #include "Logger.h"
 
+#include <unordered_map>
+
+namespace
+{
+std::unordered_map<std::string, Mix_Chunk*>& getSharedChunks()
+{
+    static std::unordered_map<std::string, Mix_Chunk*> sharedChunks;
+    return sharedChunks;
+}
+}  // namespace
+
 SoundManager::SoundManager() : music(nullptr)
 {
 }
@@ -15,12 +26,19 @@ void SoundManager::cleanup()
 {
     for (auto& sound : sounds)
     {
-        Mix_FreeChunk(sound.second);
+        for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
+        {
+            if (Mix_GetChunk(channel) == sound.second)
+            {
+                Mix_HaltChannel(channel);
+            }
+        }
     }
     sounds.clear();
 
     if (music != nullptr)
     {
+        Mix_HaltMusic();
         Mix_FreeMusic(music);
         music = nullptr;
     }
@@ -30,13 +48,28 @@ void SoundManager::cleanup()
 
 bool SoundManager::loadSound(const std::string& id, const std::string& filename)
 {
-    Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
+    auto&      sharedChunks = getSharedChunks();
+    Mix_Chunk* sound        = nullptr;
+
+    auto existing = sharedChunks.find(filename);
+    if (existing != sharedChunks.end())
+    {
+        sound = existing->second;
+    }
+    else
+    {
+        sound = Mix_LoadWAV(filename.c_str());
+    }
+
     if (sound == nullptr)
     {
         Logger::error(
             ("Failed to load sound: " + filename + " SDL_mixer Error: " + std::string(Mix_GetError())).c_str());
         return false;
     }
+
+    sharedChunks[filename] = sound;
+
     Logger::info(("Sound loaded: " + filename).c_str());
     sounds[id] = sound;
     return true;
