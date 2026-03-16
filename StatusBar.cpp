@@ -68,6 +68,18 @@ void StatusBar::setText(const std::string& text)
     textField->setTextAndCreateTexture(text);
 }
 
+void StatusBar::setPosition(const Point& position)
+{
+    this->position = position;
+    backgroundRect.setPosition(position);
+    frontRect.setPosition(position);
+
+    if (textField != nullptr)
+    {
+        textField->setPosition({ position.getX() + 5, position.getY() + 5 });
+    }
+}
+
 void StatusBar::setProgress(float value, int jumps)
 {
     float percent = 0.0f;
