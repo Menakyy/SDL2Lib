@@ -32,6 +32,7 @@ public:
     void render() override;
     void handleEvents(EventHandler& eventHandler) override;
     void setRenderer(SDL_Renderer* renderer) override;
+    void setPosition(const Point& position) override;
 
     void setText(const std::string& text);
 
