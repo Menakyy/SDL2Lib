@@ -19,13 +19,13 @@ public:
 
     virtual void setRenderer(SDL_Renderer* renderer) = 0;
 
-    void setPosition(const Point& position) { this->position = position; }
+    virtual void setPosition(const Point& position) { this->position = position; }
 
-    Point getPosition() const { return position; }
+    virtual Point getPosition() const { return position; }
 
-    Size getSize() const { return size; }
+    virtual Size getSize() const { return size; }
 
-    void setSize(const Size& size) { this->size = size; }
+    virtual void setSize(const Size& size) { this->size = size; }
 
     void setVisible(bool visibility) { visible = visibility; }
 
