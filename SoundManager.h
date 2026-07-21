@@ -13,7 +13,7 @@ public:
 
     void cleanup();
 
-    bool loadSound(const std::string& id, const std::string& filename);
+    bool loadSound(const std::string& id, const std::string& filename, bool stopOnCleanup = true);
     void playSound(const std::string& id);
     void playMusic(const std::string& filename);
     bool isSoundPlaying(const std::string& id);
@@ -21,8 +21,14 @@ public:
     bool isMusicPlaying();
 
 private:
-    std::unordered_map<std::string, Mix_Chunk*> sounds;
-    Mix_Music*                                  music;
+    struct Sound
+    {
+        Mix_Chunk* chunk         = nullptr;
+        bool       stopOnCleanup = true;
+    };
+
+    std::unordered_map<std::string, Sound> sounds;
+    Mix_Music*                             music;
 };
 
 #endif  // SOUNDMANAGER_H

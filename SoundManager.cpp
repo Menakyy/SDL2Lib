@@ -11,6 +11,17 @@ std::unordered_map<std::string, Mix_Chunk*>& getSharedChunks()
     static std::unordered_map<std::string, Mix_Chunk*> sharedChunks;
     return sharedChunks;
 }
+
+void haltChunk(Mix_Chunk* chunk)
+{
+    for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
+    {
+        if (Mix_GetChunk(channel) == chunk)
+        {
+            Mix_HaltChannel(channel);
+        }
+    }
+}
 }  // namespace
 
 SoundManager::SoundManager() : music(nullptr)
@@ -26,12 +37,9 @@ void SoundManager::cleanup()
 {
     for (auto& sound : sounds)
     {
-        for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
+        if (sound.second.stopOnCleanup)
         {
-            if (Mix_GetChunk(channel) == sound.second)
-            {
-                Mix_HaltChannel(channel);
-            }
+            haltChunk(sound.second.chunk);
         }
     }
     sounds.clear();
@@ -46,7 +54,7 @@ void SoundManager::cleanup()
     // Mix_CloseAudio();
 }
 
-bool SoundManager::loadSound(const std::string& id, const std::string& filename)
+bool SoundManager::loadSound(const std::string& id, const std::string& filename, bool stopOnCleanup)
 {
     auto&      sharedChunks = getSharedChunks();
     Mix_Chunk* sound        = nullptr;
@@ -71,7 +79,7 @@ bool SoundManager::loadSound(const std::string& id, const std::string& filename)
     sharedChunks[filename] = sound;
 
     Logger::info(("Sound loaded: " + filename).c_str());
-    sounds[id] = sound;
+    sounds[id] = { sound, stopOnCleanup };
     return true;
 }
 
@@ -85,7 +93,7 @@ void SoundManager::playSound(const std::string& id)
     }
 
     Logger::info(("Playing sound: " + id).c_str());
-    Mix_PlayChannel(-1, sounds[id], 0);
+    Mix_PlayChannel(-1, it->second.chunk, 0);
 }
 
 void SoundManager::playMusic(const std::string& filename)
@@ -117,7 +125,7 @@ bool SoundManager::isSoundPlaying(const std::string& id)
     const int channelCount = Mix_AllocateChannels(-1);
     for (int ch = 0; ch < channelCount; ++ch)
     {
-        if (Mix_GetChunk(ch) == it->second && Mix_Playing(ch) == 1)
+        if (Mix_GetChunk(ch) == it->second.chunk && Mix_Playing(ch) == 1)
         {
             return true;
         }
@@ -134,13 +142,7 @@ void SoundManager::stopSound(const std::string& id)
         return;
     }
 
-    for (int channel = 0; channel < Mix_AllocateChannels(-1); ++channel)
-    {
-        if (Mix_GetChunk(channel) == it->second)
-        {
-            Mix_HaltChannel(channel);
-        }
-    }
+    haltChunk(it->second.chunk);
 }
 
 bool SoundManager::isMusicPlaying()
