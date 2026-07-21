@@ -17,11 +17,35 @@ TextField::TextField(const std::string& text,
 {
 }
 
+TextField::TextField(const std::string& text,
+                     const Point&       position,
+                     const Size&        size,
+                     const Color&       color,
+                     const std::string& fontPath,
+                     int                fontSize)
+    : View(position, size),
+      text(text),
+      textColor(color),
+      ownsFont(true),
+      fontPath(fontPath),
+      fontSize(fontSize)
+{
+    font = TTF_OpenFont(fontPath.c_str(), fontSize);
+    if (font == nullptr)
+    {
+        Logger::error(("Failed to load font: " + fontPath + " " + TTF_GetError()).c_str());
+    }
+}
+
 TextField::~TextField()
 {
     if (textTexture != nullptr)
     {
         SDL_DestroyTexture(textTexture);
+    }
+    if (ownsFont && font != nullptr)
+    {
+        TTF_CloseFont(font);
     }
 }
 
@@ -86,9 +110,45 @@ void TextField::render()
 
     if (textTexture != nullptr)
     {
-        SDL_Rect destRect = { position.getX(), position.getY(), size.getWidth(), size.getHeight() };
+        int textX = position.getX();
+        if (alignment == Alignment::Center)
+        {
+            textX = position.getX() + (size.getWidth() - textSrcRect.w) / 2;
+        }
+        else if (alignment == Alignment::Right)
+        {
+            textX = position.getX() + size.getWidth() - textSrcRect.w;
+        }
+        int      textY    = position.getY() + (size.getHeight() - textSrcRect.h) / 2;
+        SDL_Rect destRect = { textX, textY, textSrcRect.w, textSrcRect.h };
         SDL_RenderCopy(renderer, textTexture, nullptr, &destRect);
     }
+}
+
+void TextField::setAlignment(Alignment alignment)
+{
+    this->alignment = alignment;
+}
+
+void TextField::setFontSize(int newFontSize)
+{
+    if (!ownsFont)
+    {
+        Logger::error("setFontSize: TextField does not own the font. Use the fontPath constructor.");
+        return;
+    }
+    if (ownsFont && font != nullptr)
+    {
+        TTF_CloseFont(font);
+    }
+    fontSize = newFontSize;
+    font     = TTF_OpenFont(fontPath.c_str(), fontSize);
+    if (font == nullptr)
+    {
+        Logger::error(("setFontSize: Failed to reload font: " + fontPath + " " + TTF_GetError()).c_str());
+        return;
+    }
+    createTexture();
 }
 
 void TextField::setRenderer(SDL_Renderer* renderer)

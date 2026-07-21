@@ -11,7 +11,20 @@
 class TextField : public View
 {
 public:
+    enum class Alignment
+    {
+        Left,
+        Center,
+        Right
+    };
+
     TextField(const std::string& text, const Point& position, const Size& size, const Color& color, TTF_Font* font);
+    TextField(const std::string& text,
+              const Point&       position,
+              const Size&        size,
+              const Color&       color,
+              const std::string& fontPath,
+              int                fontSize);
     ~TextField();
 
     void render() override;
@@ -20,8 +33,14 @@ public:
 
     std::string getText() const;
     void        setTextAndCreateTexture(const std::string& text);
+    void        setAlignment(Alignment alignment);
+    void        setFontSize(int fontSize);
 
 private:
+    Alignment    alignment   = Alignment::Center;
+    bool         ownsFont    = false;
+    std::string  fontPath    = "";
+    int          fontSize    = 0;
     SDL_Texture* textTexture = nullptr;
     TTF_Font*    font        = nullptr;
     std::string  text        = "";
